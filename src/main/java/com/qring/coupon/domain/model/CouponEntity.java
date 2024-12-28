@@ -4,20 +4,17 @@ import com.qring.coupon.domain.model.constraint.CouponStatus;
 import com.qring.coupon.domain.model.constraint.StockStatus;
 import io.hypersistence.utils.hibernate.id.Tsid;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.LastModifiedBy;
 
 import java.time.LocalDateTime;
 
 @Getter
+@Builder
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @Table(name = "p_coupon")
 public class CouponEntity {
 
@@ -68,15 +65,4 @@ public class CouponEntity {
     @Column(name = "deleted_by")
     private String deletedBy;
 
-    @Builder
-    public CouponEntity(String name, int totalQuantity, int remainQuantity, LocalDateTime openAt, LocalDateTime expiredAt, String username) {
-        this.name = name;
-        this.totalQuantity = totalQuantity;
-        this.remainQuantity = remainQuantity;
-        this.openAt = openAt;
-        this.expiredAt = expiredAt;
-        this.stockStatus = StockStatus.IN_STOCK;
-        this.couponStatus = CouponStatus.INACTIVE;
-        this.createdBy = username;
-    }
 }

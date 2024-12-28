@@ -3,6 +3,7 @@ package com.qring.coupon.presentation.v1.controller;
 import com.qring.coupon.application.v1.res.CouponPostResDTOv1;
 import com.qring.coupon.application.v1.res.ResDTO;
 import com.qring.coupon.domain.model.CouponEntity;
+import com.qring.coupon.infrastructure.docs.CouponControllerSwagger;
 import com.qring.coupon.presentation.v1.req.PostCouponReqDTOv1;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -13,7 +14,7 @@ import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/v1/coupons")
-public class CouponControllerV1 {
+public class CouponControllerV1 implements CouponControllerSwagger {
 
     @PostMapping
     public ResponseEntity<ResDTO<CouponPostResDTOv1>> postBy(@RequestHeader("X-User-Id") Long userId,

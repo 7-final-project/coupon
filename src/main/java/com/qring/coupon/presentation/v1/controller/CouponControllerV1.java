@@ -24,6 +24,7 @@ public class CouponControllerV1 implements CouponControllerSwagger {
         * TODO :  더미데이터입니다.
         * */
         CouponEntity dummyCouponEntity = CouponEntity.builder()
+                .id(1L)
                 .name("쿠폰1")
                 .totalQuantity(100)
                 .remainQuantity(100)

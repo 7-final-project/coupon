@@ -1,5 +1,6 @@
 package com.qring.coupon.infrastructure.docs;
 
+import com.qring.coupon.application.v1.res.CouponGetByIdResDTOV1;
 import com.qring.coupon.application.v1.res.CouponPostResDTOV1;
 import com.qring.coupon.application.v1.res.ResDTO;
 import com.qring.coupon.presentation.v1.req.PostCouponReqDTOV1;
@@ -11,9 +12,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Coupon", description = "생성, 조회, 검색, 수정, 삭제 관련 쿠폰 API")
 public interface CouponControllerSwagger {
@@ -25,5 +24,13 @@ public interface CouponControllerSwagger {
     })
     @PostMapping("/v1/coupons")
     ResponseEntity<ResDTO<CouponPostResDTOV1>> postBy(@RequestHeader("X-User-Id") Long userId, @Valid @RequestBody PostCouponReqDTOV1 dto);
+
+    @Operation(summary = "쿠폰 단건 조회", description = "쿠폰 Id 를 기준으로 쿠폰을 단건 조회하는 API 입니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "쿠폰 단건 조회 성공", content = @Content(schema = @Schema(implementation = ResDTO.class))),
+            @ApiResponse(responseCode = "400", description = "쿠폰 단건 조회 실패.", content = @Content(schema = @Schema(implementation = ResDTO.class)))
+    })
+    @GetMapping("/v1/coupons/{couponId}")
+    ResponseEntity<ResDTO<CouponGetByIdResDTOV1>> getBy(@PathVariable Long couponId);
 
 }

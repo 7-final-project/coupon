@@ -2,8 +2,10 @@ package com.qring.coupon.infrastructure.docs;
 
 import com.qring.coupon.application.v1.res.CouponGetByIdResDTOV1;
 import com.qring.coupon.application.v1.res.CouponPostResDTOV1;
+import com.qring.coupon.application.v1.res.CouponPutResDTOV1;
 import com.qring.coupon.application.v1.res.ResDTO;
 import com.qring.coupon.presentation.v1.req.PostCouponReqDTOV1;
+import com.qring.coupon.presentation.v1.req.PutCouponReqDTOV1;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -32,5 +34,15 @@ public interface CouponControllerSwagger {
     })
     @GetMapping("/v1/coupons/{couponId}")
     ResponseEntity<ResDTO<CouponGetByIdResDTOV1>> getBy(@PathVariable Long couponId);
+
+    @Operation(summary = "쿠폰 수정", description = "사용자의 Id 를 기준으로 쿠폰을 수정하는 API 입니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "쿠폰 수정 성공", content = @Content(schema = @Schema(implementation = ResDTO.class))),
+            @ApiResponse(responseCode = "400", description = "쿠폰 수정 실패.", content = @Content(schema = @Schema(implementation = ResDTO.class)))
+    })
+    @PutMapping("/v1/coupons/{couponId}")
+    ResponseEntity<ResDTO<CouponPutResDTOV1>> putBy(@RequestHeader("X-User-Id") Long userId,
+                                                    @PathVariable Long couponId,
+                                                    @Valid @RequestBody PutCouponReqDTOV1 dto);
 
 }

@@ -2,10 +2,12 @@ package com.qring.coupon.presentation.v1.controller;
 
 import com.qring.coupon.application.v1.res.CouponGetByIdResDTOV1;
 import com.qring.coupon.application.v1.res.CouponPostResDTOV1;
+import com.qring.coupon.application.v1.res.CouponPutResDTOV1;
 import com.qring.coupon.application.v1.res.ResDTO;
 import com.qring.coupon.domain.model.CouponEntity;
 import com.qring.coupon.infrastructure.docs.CouponControllerSwagger;
 import com.qring.coupon.presentation.v1.req.PostCouponReqDTOV1;
+import com.qring.coupon.presentation.v1.req.PutCouponReqDTOV1;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -68,4 +70,30 @@ public class CouponControllerV1 implements CouponControllerSwagger {
         );
     }
 
+    @PutMapping("/{couponId}")
+    public ResponseEntity<ResDTO<CouponPutResDTOV1>> putBy(@RequestHeader("X-User-Id") Long userId,
+                                                           @PathVariable Long couponId,
+                                                           @Valid @RequestBody PutCouponReqDTOV1 dto){
+
+        /*
+         * TODO :  더미데이터입니다.
+         * */
+        CouponEntity dummyCouponEntity = CouponEntity.builder()
+                .id(1L)
+                .name("쿠폰2")
+                .totalQuantity(100)
+                .remainQuantity(100)
+                .openAt(LocalDateTime.of(2025, 1, 1, 12, 0))
+                .expiredAt(LocalDateTime.of(2025, 1, 15, 12, 0))
+                .build();
+
+        return new ResponseEntity<>(
+                ResDTO.<CouponPutResDTOV1>builder()
+                        .code(HttpStatus.OK.value())
+                        .message("쿠폰 수정에 성공하였습니다.")
+                        .data(CouponPutResDTOV1.of(dummyCouponEntity))
+                        .build(),
+                HttpStatus.OK
+        );
+    }
 }

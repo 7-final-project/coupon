@@ -1,9 +1,6 @@
 package com.qring.coupon.infrastructure.docs;
 
-import com.qring.coupon.application.v1.res.CouponGetByIdResDTOV1;
-import com.qring.coupon.application.v1.res.CouponPostResDTOV1;
-import com.qring.coupon.application.v1.res.CouponPutResDTOV1;
-import com.qring.coupon.application.v1.res.ResDTO;
+import com.qring.coupon.application.v1.res.*;
 import com.qring.coupon.presentation.v1.req.PostCouponReqDTOV1;
 import com.qring.coupon.presentation.v1.req.PutCouponReqDTOV1;
 import io.swagger.v3.oas.annotations.Operation;
@@ -44,5 +41,14 @@ public interface CouponControllerSwagger {
     ResponseEntity<ResDTO<CouponPutResDTOV1>> putBy(@RequestHeader("X-User-Id") Long userId,
                                                     @PathVariable Long couponId,
                                                     @Valid @RequestBody PutCouponReqDTOV1 dto);
+
+    @Operation(summary = "쿠폰 삭제", description = "사용자의 Id 를 기준으로 쿠폰을 삭제하는 API 입니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "쿠폰 삭제 성공", content = @Content(schema = @Schema(implementation = ResDTO.class))),
+            @ApiResponse(responseCode = "400", description = "쿠폰 삭제 실패.", content = @Content(schema = @Schema(implementation = ResDTO.class)))
+    })
+    @DeleteMapping("/v1/coupons/{couponId}")
+    ResponseEntity<ResDTO<CouponDeleteResDTOV1>> deleteBy(@RequestHeader("X-User-Id") Long userId,
+                                                       @PathVariable Long couponId);
 
 }

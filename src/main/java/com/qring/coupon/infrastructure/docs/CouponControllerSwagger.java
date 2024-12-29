@@ -10,6 +10,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +26,17 @@ public interface CouponControllerSwagger {
     })
     @PostMapping("/v1/coupons")
     ResponseEntity<ResDTO<CouponPostResDTOV1>> postBy(@RequestHeader("X-User-Id") Long userId, @Valid @RequestBody PostCouponReqDTOV1 dto);
+
+    @Operation(summary = "쿠폰 검색", description = "쿠폰을 검색하는 API 입니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "쿠폰 검색 성공", content = @Content(schema = @Schema(implementation = ResDTO.class))),
+            @ApiResponse(responseCode = "400", description = "쿠폰 검색 실패.", content = @Content(schema = @Schema(implementation = ResDTO.class)))
+    })
+    @GetMapping("/v1/coupons")
+    ResponseEntity<ResDTO<CouponSearchResDTOV1>> searchBy(@PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
+                                                          @RequestParam(name = "couponId", required = false) Long couponId,
+                                                          @RequestParam(name = "name", required = false) String name,
+                                                          @RequestParam(name = "sort", required = false) String sort);
 
     @Operation(summary = "쿠폰 단건 조회", description = "쿠폰 Id 를 기준으로 쿠폰을 단건 조회하는 API 입니다.")
     @ApiResponses(value = {

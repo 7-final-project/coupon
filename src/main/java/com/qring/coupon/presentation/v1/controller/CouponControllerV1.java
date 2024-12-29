@@ -1,5 +1,6 @@
 package com.qring.coupon.presentation.v1.controller;
 
+import com.qring.coupon.application.v1.res.CouponGetByIdResDTOV1;
 import com.qring.coupon.application.v1.res.CouponPostResDTOV1;
 import com.qring.coupon.application.v1.res.ResDTO;
 import com.qring.coupon.domain.model.CouponEntity;
@@ -39,6 +40,31 @@ public class CouponControllerV1 implements CouponControllerSwagger {
                         .data(CouponPostResDTOV1.of(dummyCouponEntity))
                         .build(),
                 HttpStatus.CREATED
+        );
+    }
+
+    @GetMapping("/{couponId}")
+    public ResponseEntity<ResDTO<CouponGetByIdResDTOV1>> getBy(@PathVariable Long couponId){
+
+        /*
+         * TODO :  더미데이터입니다.
+         * */
+        CouponEntity dummyCouponEntity = CouponEntity.builder()
+                .id(1L)
+                .name("쿠폰1")
+                .totalQuantity(100)
+                .remainQuantity(100)
+                .openAt(LocalDateTime.of(2024, 12, 31, 12, 0))
+                .expiredAt(LocalDateTime.of(2025, 1, 15, 12, 0))
+                .build();
+
+        return new ResponseEntity<>(
+                ResDTO.<CouponGetByIdResDTOV1>builder()
+                        .code(HttpStatus.OK.value())
+                        .message("쿠폰 단건 조회에 성공하였습니다.")
+                        .data(CouponGetByIdResDTOV1.of(dummyCouponEntity))
+                        .build(),
+                HttpStatus.OK
         );
     }
 

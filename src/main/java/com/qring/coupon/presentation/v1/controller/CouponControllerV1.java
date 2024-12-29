@@ -1,9 +1,6 @@
 package com.qring.coupon.presentation.v1.controller;
 
-import com.qring.coupon.application.v1.res.CouponGetByIdResDTOV1;
-import com.qring.coupon.application.v1.res.CouponPostResDTOV1;
-import com.qring.coupon.application.v1.res.CouponPutResDTOV1;
-import com.qring.coupon.application.v1.res.ResDTO;
+import com.qring.coupon.application.v1.res.*;
 import com.qring.coupon.domain.model.CouponEntity;
 import com.qring.coupon.infrastructure.docs.CouponControllerSwagger;
 import com.qring.coupon.presentation.v1.req.PostCouponReqDTOV1;
@@ -96,4 +93,18 @@ public class CouponControllerV1 implements CouponControllerSwagger {
                 HttpStatus.OK
         );
     }
+
+    @DeleteMapping("/{couponId}")
+    public ResponseEntity<ResDTO<CouponDeleteResDTOV1>> deleteBy(@RequestHeader("X-User-Id") Long userId,
+                                                                 @PathVariable Long couponId){
+        return new ResponseEntity<>(
+                ResDTO.<CouponDeleteResDTOV1>builder()
+                        .code(HttpStatus.OK.value())
+                        .message("쿠폰 삭제에 성공하였습니다.")
+                        .data(CouponDeleteResDTOV1.of(1L))
+                        .build(),
+                HttpStatus.OK
+        );
+    }
+
 }

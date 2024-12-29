@@ -2,6 +2,8 @@ package com.qring.coupon.presentation.v1.controller;
 
 import com.qring.coupon.application.v1.res.*;
 import com.qring.coupon.domain.model.CouponEntity;
+import com.qring.coupon.domain.model.constraint.CouponStatus;
+import com.qring.coupon.domain.model.constraint.StockStatus;
 import com.qring.coupon.infrastructure.docs.CouponControllerSwagger;
 import com.qring.coupon.presentation.v1.req.PostCouponReqDTOV1;
 import com.qring.coupon.presentation.v1.req.PutCouponReqDTOV1;
@@ -36,6 +38,8 @@ public class CouponControllerV1 implements CouponControllerSwagger {
                 .remainQuantity(100)
                 .openAt(LocalDateTime.of(2024, 12, 31, 12, 0))
                 .expiredAt(LocalDateTime.of(2025, 1, 15, 12, 0))
+                .stockStatus(StockStatus.IN_STOCK)
+                .couponStatus(CouponStatus.INACTIVE)
                 .build();
 
         return new ResponseEntity<>(
@@ -62,6 +66,8 @@ public class CouponControllerV1 implements CouponControllerSwagger {
                         .remainQuantity(100)
                         .openAt(LocalDateTime.of(2024, 12, 31, 12, 0))
                         .expiredAt(LocalDateTime.of(2025, 1, 15, 12, 0))
+                        .stockStatus(StockStatus.IN_STOCK)
+                        .couponStatus(CouponStatus.INACTIVE)
                         .build(),
 
                 CouponEntity.builder()
@@ -71,6 +77,8 @@ public class CouponControllerV1 implements CouponControllerSwagger {
                         .remainQuantity(100)
                         .openAt(LocalDateTime.of(2024, 12, 31, 12, 0))
                         .expiredAt(LocalDateTime.of(2025, 1, 15, 12, 0))
+                        .stockStatus(StockStatus.IN_STOCK)
+                        .couponStatus(CouponStatus.INACTIVE)
                         .build()
         );
 
@@ -99,6 +107,8 @@ public class CouponControllerV1 implements CouponControllerSwagger {
                 .remainQuantity(100)
                 .openAt(LocalDateTime.of(2024, 12, 31, 12, 0))
                 .expiredAt(LocalDateTime.of(2025, 1, 15, 12, 0))
+                .stockStatus(StockStatus.IN_STOCK)
+                .couponStatus(CouponStatus.INACTIVE)
                 .build();
 
         return new ResponseEntity<>(
@@ -126,6 +136,8 @@ public class CouponControllerV1 implements CouponControllerSwagger {
                 .remainQuantity(100)
                 .openAt(LocalDateTime.of(2025, 1, 1, 12, 0))
                 .expiredAt(LocalDateTime.of(2025, 1, 15, 12, 0))
+                .stockStatus(StockStatus.IN_STOCK)
+                .couponStatus(CouponStatus.INACTIVE)
                 .build();
 
         return new ResponseEntity<>(

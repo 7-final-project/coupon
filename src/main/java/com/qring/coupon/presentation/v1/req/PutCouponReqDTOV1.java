@@ -14,9 +14,9 @@ public class PutCouponReqDTOV1 {
 
     @Valid
     @NotNull(message = "쿠폰 정보를 입력해주세요.")
-    private CouponDTO couponDTO;
+    private Coupon coupon;
 
-    private static class CouponDTO {
+    private static class Coupon {
         @NotBlank(message = "쿠폰 이름을 입력해주세요.")
         private String name;
 

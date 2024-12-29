@@ -14,11 +14,11 @@ public class PostCouponReqDTOV1 {
 
     @Valid
     @NotNull(message = "쿠폰 정보를 입력해주세요.")
-    private CouponDTO couponDTO;
+    private Coupon coupon;
 
 
     @Getter
-    private static class CouponDTO {
+    private static class Coupon {
 
         @NotBlank(message = "쿠폰 이름을 입력해주세요.")
         private String name;

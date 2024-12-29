@@ -16,11 +16,11 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class CouponPutResDTOV1 {
 
-    private CouponDTO couponDTO;
+    private Coupon coupon;
 
     public static CouponPutResDTOV1 of(CouponEntity couponEntity) {
         return CouponPutResDTOV1.builder()
-                .couponDTO(CouponDTO.from(couponEntity))
+                .coupon(Coupon.from(couponEntity))
                 .build();
     }
 
@@ -28,7 +28,7 @@ public class CouponPutResDTOV1 {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    private static class CouponDTO{
+    private static class Coupon {
         private Long id;
         private String name;
         private int totalQuantity;
@@ -38,8 +38,8 @@ public class CouponPutResDTOV1 {
         private StockStatus stockStatus;
         private CouponStatus couponStatus;
 
-        public static CouponDTO from(CouponEntity couponEntity){
-            return CouponDTO.builder()
+        public static Coupon from(CouponEntity couponEntity){
+            return Coupon.builder()
                     .id(couponEntity.getId())
                     .name(couponEntity.getName())
                     .totalQuantity(couponEntity.getTotalQuantity())

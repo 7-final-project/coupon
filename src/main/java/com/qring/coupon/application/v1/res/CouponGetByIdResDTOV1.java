@@ -34,7 +34,7 @@ public class CouponGetByIdResDTOV1 {
         private int totalQuantity;
         private int remainQuantity;
         private LocalDateTime openAt;
-        private LocalDateTime expireAt;
+        private LocalDateTime expiredAt;
         private StockStatus stockStatus;
         private CouponStatus couponStatus;
 
@@ -45,7 +45,7 @@ public class CouponGetByIdResDTOV1 {
                     .totalQuantity(couponEntity.getTotalQuantity())
                     .remainQuantity(couponEntity.getRemainQuantity())
                     .openAt(couponEntity.getOpenAt())
-                    .expireAt(couponEntity.getExpiredAt())
+                    .expiredAt(couponEntity.getExpiredAt())
                     .stockStatus(couponEntity.getStockStatus())
                     .couponStatus(couponEntity.getCouponStatus())
                     .build();

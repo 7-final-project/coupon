@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
-public class PostCouponReqDTOv1 {
+public class PostCouponReqDTOV1 {
 
     @Valid
     @NotNull(message = "쿠폰 정보를 입력해주세요.")

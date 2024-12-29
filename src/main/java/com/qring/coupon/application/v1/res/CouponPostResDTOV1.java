@@ -14,12 +14,12 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CouponPostResDTOv1 {
+public class CouponPostResDTOV1 {
 
     private CouponDTO couponDTO;
 
-    public static CouponPostResDTOv1 of(CouponEntity couponEntity) {
-        return CouponPostResDTOv1.builder()
+    public static CouponPostResDTOV1 of(CouponEntity couponEntity) {
+        return CouponPostResDTOV1.builder()
                 .couponDTO(CouponDTO.from(couponEntity))
                 .build();
     }

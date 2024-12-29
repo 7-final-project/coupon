@@ -1,8 +1,8 @@
 package com.qring.coupon.infrastructure.docs;
 
-import com.qring.coupon.application.v1.res.CouponPostResDTOv1;
+import com.qring.coupon.application.v1.res.CouponPostResDTOV1;
 import com.qring.coupon.application.v1.res.ResDTO;
-import com.qring.coupon.presentation.v1.req.PostCouponReqDTOv1;
+import com.qring.coupon.presentation.v1.req.PostCouponReqDTOV1;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -24,6 +24,6 @@ public interface CouponControllerSwagger {
             @ApiResponse(responseCode = "400", description = "쿠폰 생성 실패.", content = @Content(schema = @Schema(implementation = ResDTO.class)))
     })
     @PostMapping("/v1/coupons")
-    ResponseEntity<ResDTO<CouponPostResDTOv1>> postBy(@RequestHeader("X-User-Id") Long userId, @Valid @RequestBody PostCouponReqDTOv1 dto);
+    ResponseEntity<ResDTO<CouponPostResDTOV1>> postBy(@RequestHeader("X-User-Id") Long userId, @Valid @RequestBody PostCouponReqDTOV1 dto);
 
 }

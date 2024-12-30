@@ -28,19 +28,14 @@ public class CouponControllerV1 implements CouponControllerSwagger {
     @PostMapping
     public ResponseEntity<ResDTO<CouponPostResDTOV1>> postBy(@RequestHeader("X-User-Id") Long userId,
                                                              @Valid @RequestBody PostCouponReqDTOV1 dto){
-
         /*
         * TODO :  더미데이터입니다.
         * */
         CouponEntity dummyCouponEntity = CouponEntity.builder()
-                .id(1L)
                 .name("쿠폰1")
                 .totalQuantity(100)
-                .remainQuantity(100)
                 .openAt(LocalDateTime.of(2024, 12, 31, 12, 0))
                 .expiredAt(LocalDateTime.of(2025, 1, 15, 12, 0))
-                .stockStatus(StockStatus.IN_STOCK)
-                .couponStatus(CouponStatus.INACTIVE)
                 .build();
 
         return new ResponseEntity<>(
@@ -57,29 +52,25 @@ public class CouponControllerV1 implements CouponControllerSwagger {
     public ResponseEntity<ResDTO<CouponSearchResDTOV1>> searchBy(@PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
                                                                  @RequestParam(name = "couponId", required = false) Long couponId,
                                                                  @RequestParam(name = "name", required = false) String name,
+                                                                 @RequestParam(name = "stockStatus", required = false) StockStatus stockStatus,
+                                                                 @RequestParam(name = "couponStatus", required = false) CouponStatus couponStatus,
                                                                  @RequestParam(name = "sort", required = false) String sort){
-
+        /*
+         * TODO :  더미데이터입니다.
+         * */
         List<CouponEntity> dummyCouponList = List.of(
                 CouponEntity.builder()
-                        .id(1L)
                         .name("쿠폰1")
                         .totalQuantity(100)
-                        .remainQuantity(100)
                         .openAt(LocalDateTime.of(2024, 12, 31, 12, 0))
                         .expiredAt(LocalDateTime.of(2025, 1, 15, 12, 0))
-                        .stockStatus(StockStatus.IN_STOCK)
-                        .couponStatus(CouponStatus.INACTIVE)
                         .build(),
 
                 CouponEntity.builder()
-                        .id(2L)
                         .name("쿠폰2")
                         .totalQuantity(100)
-                        .remainQuantity(100)
                         .openAt(LocalDateTime.of(2024, 12, 31, 12, 0))
                         .expiredAt(LocalDateTime.of(2025, 1, 15, 12, 0))
-                        .stockStatus(StockStatus.IN_STOCK)
-                        .couponStatus(CouponStatus.INACTIVE)
                         .build()
         );
 
@@ -102,14 +93,10 @@ public class CouponControllerV1 implements CouponControllerSwagger {
          * TODO :  더미데이터입니다.
          * */
         CouponEntity dummyCouponEntity = CouponEntity.builder()
-                .id(1L)
                 .name("쿠폰1")
                 .totalQuantity(100)
-                .remainQuantity(100)
                 .openAt(LocalDateTime.of(2024, 12, 31, 12, 0))
                 .expiredAt(LocalDateTime.of(2025, 1, 15, 12, 0))
-                .stockStatus(StockStatus.IN_STOCK)
-                .couponStatus(CouponStatus.INACTIVE)
                 .build();
 
         return new ResponseEntity<>(

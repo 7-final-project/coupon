@@ -87,7 +87,7 @@ public class CouponControllerV1 implements CouponControllerSwagger {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ResDTO<CouponGetByIdResDTOV1>> getBy(@PathVariable Long couponId){
+    public ResponseEntity<ResDTO<CouponGetByIdResDTOV1>> getBy(@PathVariable Long id){
 
         /*
          * TODO :  더미데이터입니다.

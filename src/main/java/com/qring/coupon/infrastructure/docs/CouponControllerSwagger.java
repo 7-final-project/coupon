@@ -53,7 +53,7 @@ public interface CouponControllerSwagger {
             @ApiResponse(responseCode = "400", description = "쿠폰 수정 실패.", content = @Content(schema = @Schema(implementation = ResDTO.class)))
     })
     @PutMapping("/v1/coupons/{couponId}")
-    ResponseEntity<ResDTO<CouponPutResDTOV1>> putBy(@RequestHeader("X-User-Id") Long userId,
+    ResponseEntity<ResDTO<Object>> putBy(@RequestHeader("X-User-Id") Long userId,
                                                     @PathVariable Long couponId,
                                                     @Valid @RequestBody PutCouponReqDTOV1 dto);
 
@@ -63,7 +63,7 @@ public interface CouponControllerSwagger {
             @ApiResponse(responseCode = "400", description = "쿠폰 삭제 실패.", content = @Content(schema = @Schema(implementation = ResDTO.class)))
     })
     @DeleteMapping("/v1/coupons/{couponId}")
-    ResponseEntity<ResDTO<CouponDeleteResDTOV1>> deleteBy(@RequestHeader("X-User-Id") Long userId,
+    ResponseEntity<ResDTO<Object>> deleteBy(@RequestHeader("X-User-Id") Long userId,
                                                        @PathVariable Long couponId);
 
 }

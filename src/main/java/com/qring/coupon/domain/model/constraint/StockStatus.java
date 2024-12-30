@@ -12,7 +12,7 @@ public enum StockStatus {
     private final String status;
 
     public static class Status {
-        public static final String IN_STOCK = "품절";
-        public static final String OUT_OF_STOCK = "재고있음";
+        public static final String IN_STOCK = "재고있음";
+        public static final String OUT_OF_STOCK = "품절";
     }
 }

@@ -31,6 +31,7 @@ public class CouponSearchResDTOV1 {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class CouponPage {
+
         private List<Coupon> content;
         private PageDetails page;
 
@@ -46,6 +47,7 @@ public class CouponSearchResDTOV1 {
         @NoArgsConstructor
         @AllArgsConstructor
         public static class Coupon {
+
             private Long id;
             private String name;
             private int totalQuantity;
@@ -56,7 +58,9 @@ public class CouponSearchResDTOV1 {
             private CouponStatus couponStatus;
 
             public static List<Coupon> from(List<CouponEntity> couponEntityList) {
-                return couponEntityList.stream().map(Coupon::from).toList();
+                return couponEntityList.stream()
+                        .map(Coupon::from)
+                        .toList();
             }
 
             public static Coupon from(CouponEntity couponEntity) {
@@ -78,6 +82,7 @@ public class CouponSearchResDTOV1 {
         @NoArgsConstructor
         @AllArgsConstructor
         public static class PageDetails {
+
             private int size;
             private int number;
             private long totalElements;

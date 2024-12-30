@@ -50,7 +50,7 @@ public class CouponEntity {
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
-    @Column(name = "modified_at")
+    @Column(name = "modified_at", nullable = false)
     private LocalDateTime modifiedAt;
 
     @Column(name = "deleted_at")
@@ -59,7 +59,7 @@ public class CouponEntity {
     @Column(name = "created_by", updatable = false)
     private String createdBy;
 
-    @Column(name = "modified_by")
+    @Column(name = "modified_by", nullable = false)
     private String modifiedBy;
 
     @Column(name = "deleted_by")

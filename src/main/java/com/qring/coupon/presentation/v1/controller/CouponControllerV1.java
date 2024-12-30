@@ -123,42 +123,25 @@ public class CouponControllerV1 implements CouponControllerSwagger {
     }
 
     @PutMapping("/{couponId}")
-    public ResponseEntity<ResDTO<CouponPutResDTOV1>> putBy(@RequestHeader("X-User-Id") Long userId,
+    public ResponseEntity<ResDTO<Object>> putBy(@RequestHeader("X-User-Id") Long userId,
                                                            @PathVariable Long couponId,
                                                            @Valid @RequestBody PutCouponReqDTOV1 dto){
-
-        /*
-         * TODO :  더미데이터입니다.
-         * */
-        CouponEntity dummyCouponEntity = CouponEntity.builder()
-                .id(1L)
-                .name("쿠폰2")
-                .totalQuantity(100)
-                .remainQuantity(100)
-                .openAt(LocalDateTime.of(2025, 1, 1, 12, 0))
-                .expiredAt(LocalDateTime.of(2025, 1, 15, 12, 0))
-                .stockStatus(StockStatus.IN_STOCK)
-                .couponStatus(CouponStatus.INACTIVE)
-                .build();
-
         return new ResponseEntity<>(
-                ResDTO.<CouponPutResDTOV1>builder()
+                ResDTO.builder()
                         .code(HttpStatus.OK.value())
                         .message("쿠폰 수정에 성공하였습니다.")
-                        .data(CouponPutResDTOV1.of(dummyCouponEntity))
                         .build(),
                 HttpStatus.OK
         );
     }
 
     @DeleteMapping("/{couponId}")
-    public ResponseEntity<ResDTO<CouponDeleteResDTOV1>> deleteBy(@RequestHeader("X-User-Id") Long userId,
+    public ResponseEntity<ResDTO<Object>> deleteBy(@RequestHeader("X-User-Id") Long userId,
                                                                  @PathVariable Long couponId){
         return new ResponseEntity<>(
-                ResDTO.<CouponDeleteResDTOV1>builder()
+                ResDTO.builder()
                         .code(HttpStatus.OK.value())
                         .message("쿠폰 삭제에 성공하였습니다.")
-                        .data(CouponDeleteResDTOV1.of(1L))
                         .build(),
                 HttpStatus.OK
         );

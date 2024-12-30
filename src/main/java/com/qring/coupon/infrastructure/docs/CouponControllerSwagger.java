@@ -20,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Coupon", description = "생성, 조회, 검색, 수정, 삭제 관련 쿠폰 API")
+@RequestMapping("/v1/coupons")
 public interface CouponControllerSwagger {
 
     @Operation(summary = "쿠폰 생성", description = "사용자의 Id 를 기준으로 쿠폰을 생성하는 API 입니다.")
@@ -27,7 +28,7 @@ public interface CouponControllerSwagger {
             @ApiResponse(responseCode = "201", description = "쿠폰 생성 성공", content = @Content(schema = @Schema(implementation = ResDTO.class))),
             @ApiResponse(responseCode = "400", description = "쿠폰 생성 실패.", content = @Content(schema = @Schema(implementation = ResDTO.class)))
     })
-    @PostMapping("/v1/coupons")
+    @PostMapping
     ResponseEntity<ResDTO<CouponPostResDTOV1>> postBy(@RequestHeader("X-User-Id") Long userId,
                                                       @Valid @RequestBody PostCouponReqDTOV1 dto);
 
@@ -36,7 +37,7 @@ public interface CouponControllerSwagger {
             @ApiResponse(responseCode = "200", description = "쿠폰 검색 성공", content = @Content(schema = @Schema(implementation = ResDTO.class))),
             @ApiResponse(responseCode = "400", description = "쿠폰 검색 실패.", content = @Content(schema = @Schema(implementation = ResDTO.class)))
     })
-    @GetMapping("/v1/coupons")
+    @GetMapping
     ResponseEntity<ResDTO<CouponSearchResDTOV1>> searchBy(@PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
                                                           @RequestParam(name = "id", required = false) Long couponId,
                                                           @RequestParam(name = "name", required = false) String name,
@@ -49,7 +50,7 @@ public interface CouponControllerSwagger {
             @ApiResponse(responseCode = "200", description = "쿠폰 단건 조회 성공", content = @Content(schema = @Schema(implementation = ResDTO.class))),
             @ApiResponse(responseCode = "400", description = "쿠폰 단건 조회 실패.", content = @Content(schema = @Schema(implementation = ResDTO.class)))
     })
-    @GetMapping("/v1/coupons/{id}")
+    @GetMapping("/{id}")
     ResponseEntity<ResDTO<CouponGetByIdResDTOV1>> getBy(@PathVariable Long id);
 
     @Operation(summary = "쿠폰 수정", description = "사용자의 Id 를 기준으로 쿠폰을 수정하는 API 입니다.")
@@ -57,7 +58,7 @@ public interface CouponControllerSwagger {
             @ApiResponse(responseCode = "200", description = "쿠폰 수정 성공", content = @Content(schema = @Schema(implementation = ResDTO.class))),
             @ApiResponse(responseCode = "400", description = "쿠폰 수정 실패.", content = @Content(schema = @Schema(implementation = ResDTO.class)))
     })
-    @PutMapping("/v1/coupons/{id}")
+    @PutMapping("/{id}")
     ResponseEntity<ResDTO<Object>> putBy(@RequestHeader("X-User-Id") Long userId,
                                          @PathVariable Long id,
                                          @Valid @RequestBody PutCouponReqDTOV1 dto);
@@ -67,7 +68,7 @@ public interface CouponControllerSwagger {
             @ApiResponse(responseCode = "200", description = "쿠폰 삭제 성공", content = @Content(schema = @Schema(implementation = ResDTO.class))),
             @ApiResponse(responseCode = "400", description = "쿠폰 삭제 실패.", content = @Content(schema = @Schema(implementation = ResDTO.class)))
     })
-    @DeleteMapping("/v1/coupons/{id}")
+    @DeleteMapping("/{id}")
     ResponseEntity<ResDTO<Object>> deleteBy(@RequestHeader("X-User-Id") Long userId,
                                             @PathVariable Long id);
 

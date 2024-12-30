@@ -1,5 +1,6 @@
 package com.qring.coupon.presentation.v1.controller;
 
+import com.qring.coupon.application.global.dto.ResDTO;
 import com.qring.coupon.application.v1.res.*;
 import com.qring.coupon.domain.model.CouponEntity;
 import com.qring.coupon.domain.model.constraint.CouponStatus;

@@ -1,5 +1,6 @@
 package com.qring.coupon.infrastructure.docs;
 
+import com.qring.coupon.application.global.dto.ResDTO;
 import com.qring.coupon.application.v1.res.*;
 import com.qring.coupon.presentation.v1.req.PostCouponReqDTOV1;
 import com.qring.coupon.presentation.v1.req.PutCouponReqDTOV1;

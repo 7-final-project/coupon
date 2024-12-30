@@ -1,4 +1,4 @@
-package com.qring.coupon.application.v1.res;
+package com.qring.coupon.application.global.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

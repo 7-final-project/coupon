@@ -16,7 +16,6 @@ public class PostCouponReqDTOV1 {
     @NotNull(message = "쿠폰 정보를 입력해주세요.")
     private Coupon coupon;
 
-
     @Getter
     private static class Coupon {
 
@@ -32,6 +31,7 @@ public class PostCouponReqDTOV1 {
 
         @NotNull(message = "쿠폰 만료 일자를 입력해주세요.")
         private LocalDateTime expiredAt;
+
     }
 
 }

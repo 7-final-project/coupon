@@ -29,6 +29,7 @@ public class CouponGetByIdResDTOV1 {
     @NoArgsConstructor
     @AllArgsConstructor
     private static class Coupon {
+
         private Long id;
         private String name;
         private int totalQuantity;

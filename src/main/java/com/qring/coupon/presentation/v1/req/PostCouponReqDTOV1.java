@@ -24,8 +24,6 @@ public class PostCouponReqDTOV1 {
 
         private int totalQuantity;
 
-        private int remainQuantity;
-
         @NotNull(message = "쿠폰 오픈 시간을 입력해주세요.")
         private LocalDateTime openAt;
 

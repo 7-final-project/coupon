@@ -11,10 +11,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDateTime;
 
 @Getter
-@Builder
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 @Table(name = "p_coupon")
 public class CouponEntity {
 
@@ -65,4 +63,14 @@ public class CouponEntity {
     @Column(name = "deleted_by")
     private String deletedBy;
 
+    @Builder
+    public CouponEntity(String name, int totalQuantity, LocalDateTime openAt, LocalDateTime expiredAt) {
+        this.name = name;
+        this.totalQuantity = totalQuantity;
+        this.remainQuantity = totalQuantity;
+        this.openAt = openAt;
+        this.expiredAt = expiredAt;
+        this.stockStatus = StockStatus.IN_STOCK;
+        this.couponStatus = CouponStatus.INACTIVE;
+    }
 }

@@ -111,8 +111,8 @@ public class CouponControllerV1 implements CouponControllerSwagger {
 
     @PutMapping("/{id}")
     public ResponseEntity<ResDTO<Object>> putBy(@RequestHeader("X-User-Id") Long userId,
-                                                           @PathVariable Long id,
-                                                           @Valid @RequestBody PutCouponReqDTOV1 dto){
+                                                @PathVariable Long id,
+                                                @Valid @RequestBody PutCouponReqDTOV1 dto){
         return new ResponseEntity<>(
                 ResDTO.builder()
                         .code(HttpStatus.OK.value())
@@ -124,7 +124,7 @@ public class CouponControllerV1 implements CouponControllerSwagger {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ResDTO<Object>> deleteBy(@RequestHeader("X-User-Id") Long userId,
-                                                                 @PathVariable Long id){
+                                                   @PathVariable Long id){
         return new ResponseEntity<>(
                 ResDTO.builder()
                         .code(HttpStatus.OK.value())

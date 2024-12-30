@@ -17,6 +17,7 @@ public class PutCouponReqDTOV1 {
     @NotNull(message = "쿠폰 정보를 입력해주세요.")
     private Coupon coupon;
 
+    @Getter
     private static class Coupon {
 
         @NotBlank(message = "쿠폰 이름을 입력해주세요.")

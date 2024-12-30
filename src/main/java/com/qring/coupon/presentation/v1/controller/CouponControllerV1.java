@@ -50,7 +50,7 @@ public class CouponControllerV1 implements CouponControllerSwagger {
 
     @GetMapping
     public ResponseEntity<ResDTO<CouponSearchResDTOV1>> searchBy(@PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
-                                                                 @RequestParam(name = "couponId", required = false) Long couponId,
+                                                                 @RequestParam(name = "id", required = false) Long couponId,
                                                                  @RequestParam(name = "name", required = false) String name,
                                                                  @RequestParam(name = "stockStatus", required = false) StockStatus stockStatus,
                                                                  @RequestParam(name = "couponStatus", required = false) CouponStatus couponStatus,
@@ -86,7 +86,7 @@ public class CouponControllerV1 implements CouponControllerSwagger {
         );
     }
 
-    @GetMapping("/{couponId}")
+    @GetMapping("/{id}")
     public ResponseEntity<ResDTO<CouponGetByIdResDTOV1>> getBy(@PathVariable Long couponId){
 
         /*
@@ -109,9 +109,9 @@ public class CouponControllerV1 implements CouponControllerSwagger {
         );
     }
 
-    @PutMapping("/{couponId}")
+    @PutMapping("/{id}")
     public ResponseEntity<ResDTO<Object>> putBy(@RequestHeader("X-User-Id") Long userId,
-                                                           @PathVariable Long couponId,
+                                                           @PathVariable Long id,
                                                            @Valid @RequestBody PutCouponReqDTOV1 dto){
         return new ResponseEntity<>(
                 ResDTO.builder()
@@ -122,9 +122,9 @@ public class CouponControllerV1 implements CouponControllerSwagger {
         );
     }
 
-    @DeleteMapping("/{couponId}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<ResDTO<Object>> deleteBy(@RequestHeader("X-User-Id") Long userId,
-                                                                 @PathVariable Long couponId){
+                                                                 @PathVariable Long id){
         return new ResponseEntity<>(
                 ResDTO.builder()
                         .code(HttpStatus.OK.value())

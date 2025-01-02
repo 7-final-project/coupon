@@ -23,6 +23,9 @@ public class PostCouponReqDTOV1 {
         @NotBlank(message = "쿠폰 이름을 입력해주세요.")
         private String name;
 
+        @Positive(message = "쿠폰 할인 금액을 입력해주세요.")
+        private int discount;
+
         @Positive(message = "쿠폰 전체 개수를 입력해주세요.")
         private int totalQuantity;
 

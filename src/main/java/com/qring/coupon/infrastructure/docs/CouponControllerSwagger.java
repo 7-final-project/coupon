@@ -1,9 +1,10 @@
 package com.qring.coupon.infrastructure.docs;
 
 import com.qring.coupon.application.global.dto.ResDTO;
-import com.qring.coupon.application.v1.res.*;
+import com.qring.coupon.application.v1.res.CouponGetByIdResDTOV1;
+import com.qring.coupon.application.v1.res.CouponPostResDTOV1;
+import com.qring.coupon.application.v1.res.CouponSearchResDTOV1;
 import com.qring.coupon.domain.model.constraint.CouponStatus;
-import com.qring.coupon.domain.model.constraint.StockStatus;
 import com.qring.coupon.presentation.v1.req.PostCouponReqDTOV1;
 import com.qring.coupon.presentation.v1.req.PutCouponReqDTOV1;
 import io.swagger.v3.oas.annotations.Operation;
@@ -41,7 +42,6 @@ public interface CouponControllerSwagger {
     ResponseEntity<ResDTO<CouponSearchResDTOV1>> searchBy(@PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
                                                           @RequestParam(name = "id", required = false) Long couponId,
                                                           @RequestParam(name = "name", required = false) String name,
-                                                          @RequestParam(name = "stockStatus", required = false) StockStatus stockStatus,
                                                           @RequestParam(name = "couponStatus", required = false) CouponStatus couponStatus,
                                                           @RequestParam(name = "sort", required = false) String sort);
 

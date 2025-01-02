@@ -70,13 +70,15 @@ public class CouponEntity {
     private String deletedBy;
 
     @Builder
-    public CouponEntity(String name, int discount, int totalQuantity, LocalDateTime openAt, LocalDateTime expiredAt) {
+    public CouponEntity(String name, int discount, int totalQuantity, int remainQuantity, LocalDateTime openAt, LocalDateTime expiredAt, CouponStatus couponStatus, String username) {
         this.name = name;
         this.discount = discount;
         this.totalQuantity = totalQuantity;
         this.remainQuantity = totalQuantity;
         this.openAt = openAt;
         this.expiredAt = expiredAt;
-        this.couponStatus = CouponStatus.INACTIVE;
+        this.couponStatus = couponStatus;
+        this.createdBy = username;
+        this.modifiedBy = username;
     }
 }

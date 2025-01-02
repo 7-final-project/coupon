@@ -33,6 +33,7 @@ public class CouponControllerV1 implements CouponControllerSwagger {
         * */
         CouponEntity dummyCouponEntity = CouponEntity.builder()
                 .name("쿠폰1")
+                .discount(1000)
                 .totalQuantity(100)
                 .openAt(LocalDateTime.of(2024, 12, 31, 12, 0))
                 .expiredAt(LocalDateTime.of(2025, 1, 15, 12, 0))
@@ -61,6 +62,7 @@ public class CouponControllerV1 implements CouponControllerSwagger {
         List<CouponEntity> dummyCouponList = List.of(
                 CouponEntity.builder()
                         .name("쿠폰1")
+                        .discount(1000)
                         .totalQuantity(100)
                         .openAt(LocalDateTime.of(2024, 12, 31, 12, 0))
                         .expiredAt(LocalDateTime.of(2025, 1, 15, 12, 0))
@@ -68,6 +70,7 @@ public class CouponControllerV1 implements CouponControllerSwagger {
 
                 CouponEntity.builder()
                         .name("쿠폰2")
+                        .discount(2000)
                         .totalQuantity(100)
                         .openAt(LocalDateTime.of(2024, 12, 31, 12, 0))
                         .expiredAt(LocalDateTime.of(2025, 1, 15, 12, 0))
@@ -94,6 +97,7 @@ public class CouponControllerV1 implements CouponControllerSwagger {
          * */
         CouponEntity dummyCouponEntity = CouponEntity.builder()
                 .name("쿠폰1")
+                .discount(1000)
                 .totalQuantity(100)
                 .openAt(LocalDateTime.of(2024, 12, 31, 12, 0))
                 .expiredAt(LocalDateTime.of(2025, 1, 15, 12, 0))

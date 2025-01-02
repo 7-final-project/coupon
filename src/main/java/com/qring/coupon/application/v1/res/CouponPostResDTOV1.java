@@ -32,6 +32,7 @@ public class CouponPostResDTOV1 {
 
         private Long id;
         private String name;
+        private int discount;
         private int totalQuantity;
         private int remainQuantity;
         private LocalDateTime openAt;
@@ -42,6 +43,7 @@ public class CouponPostResDTOV1 {
             return Coupon.builder()
                     .id(couponEntity.getId())
                     .name(couponEntity.getName())
+                    .discount(couponEntity.getDiscount())
                     .totalQuantity(couponEntity.getTotalQuantity())
                     .remainQuantity(couponEntity.getRemainQuantity())
                     .openAt(couponEntity.getOpenAt())

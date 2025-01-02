@@ -23,6 +23,9 @@ public class CouponEntity {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @Column(name = "discount", nullable = false)
+    private int discount;
+
     @Column(name = "total_quantity", nullable = false)
     private int totalQuantity;
 
@@ -60,8 +63,9 @@ public class CouponEntity {
     private String deletedBy;
 
     @Builder
-    public CouponEntity(String name, int totalQuantity, LocalDateTime openAt, LocalDateTime expiredAt) {
+    public CouponEntity(String name, int discount, int totalQuantity, LocalDateTime openAt, LocalDateTime expiredAt) {
         this.name = name;
+        this.discount = discount;
         this.totalQuantity = totalQuantity;
         this.remainQuantity = totalQuantity;
         this.openAt = openAt;

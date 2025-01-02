@@ -54,7 +54,6 @@ public class CouponSearchResDTOV1 {
             private int remainQuantity;
             private LocalDateTime openAt;
             private LocalDateTime expiredAt;
-            private StockStatus stockStatus;
             private CouponStatus couponStatus;
 
             public static List<Coupon> from(List<CouponEntity> couponEntityList) {
@@ -71,7 +70,6 @@ public class CouponSearchResDTOV1 {
                         .remainQuantity(couponEntity.getRemainQuantity())
                         .openAt(couponEntity.getOpenAt())
                         .expiredAt(couponEntity.getExpiredAt())
-                        .stockStatus(couponEntity.getStockStatus())
                         .couponStatus(couponEntity.getCouponStatus())
                         .build();
             }

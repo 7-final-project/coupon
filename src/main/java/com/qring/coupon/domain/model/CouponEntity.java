@@ -46,7 +46,7 @@ public class CouponEntity {
     @Column(name = "coupon_status", nullable = false)
     private CouponStatus couponStatus;
 
-    @OneToMany(mappedBy = "coupon", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "couponEntity", cascade = CascadeType.REMOVE)
     List<UserCouponEntity> userCouponEntityList = new ArrayList<>();
 
     @CreationTimestamp

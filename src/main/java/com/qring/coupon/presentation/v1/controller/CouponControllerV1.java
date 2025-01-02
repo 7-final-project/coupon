@@ -6,7 +6,6 @@ import com.qring.coupon.application.v1.res.CouponPostByIdResDTOV1;
 import com.qring.coupon.application.v1.res.CouponPostResDTOV1;
 import com.qring.coupon.application.v1.res.CouponSearchResDTOV1;
 import com.qring.coupon.domain.model.CouponEntity;
-import com.qring.coupon.domain.model.UserCouponEntity;
 import com.qring.coupon.domain.model.constraint.CouponStatus;
 import com.qring.coupon.infrastructure.docs.CouponControllerSwagger;
 import com.qring.coupon.presentation.v1.req.PostCouponReqDTOV1;
@@ -54,7 +53,7 @@ public class CouponControllerV1 implements CouponControllerSwagger {
 
     @PostMapping("/{id}/issue")
     public ResponseEntity<ResDTO<CouponPostByIdResDTOV1>> postBy(@RequestHeader("X-User-Id") Long userId,
-                                                                 @Valid @PathVariable Long id){
+                                                                 @PathVariable Long id){
         /*
          * TODO :  더미데이터입니다.
          */

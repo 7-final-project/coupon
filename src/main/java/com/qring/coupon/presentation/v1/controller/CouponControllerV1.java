@@ -109,23 +109,11 @@ public class CouponControllerV1 implements CouponControllerSwagger {
 
     @GetMapping("/{id}")
     public ResponseEntity<ResDTO<CouponGetByIdResDTOV1>> getBy(@PathVariable Long id){
-
-        /*
-         * TODO :  더미데이터입니다.
-         * */
-        CouponEntity dummyCouponEntity = CouponEntity.builder()
-                .name("쿠폰1")
-                .discount(1000)
-                .totalQuantity(100)
-                .openAt(LocalDateTime.of(2024, 12, 31, 12, 0))
-                .expiredAt(LocalDateTime.of(2025, 1, 15, 12, 0))
-                .build();
-
         return new ResponseEntity<>(
                 ResDTO.<CouponGetByIdResDTOV1>builder()
                         .code(HttpStatus.OK.value())
                         .message("쿠폰 단건 조회에 성공하였습니다.")
-                        .data(CouponGetByIdResDTOV1.of(dummyCouponEntity))
+                        .data(couponServiceV1.getBy(id))
                         .build(),
                 HttpStatus.OK
         );

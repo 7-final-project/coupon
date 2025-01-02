@@ -3,6 +3,7 @@ package com.qring.coupon.application.v1.service;
 import com.qring.coupon.application.global.exception.BadRequestException;
 import com.qring.coupon.application.global.exception.DuplicateResourceException;
 import com.qring.coupon.application.global.exception.UnauthorizedAccessException;
+import com.qring.coupon.application.v1.res.CouponGetByIdResDTOV1;
 import com.qring.coupon.application.v1.res.CouponPostResDTOV1;
 import com.qring.coupon.domain.model.CouponEntity;
 import com.qring.coupon.domain.repository.CouponRepository;
@@ -43,5 +44,15 @@ public class CouponServiceV1 {
         );
 
         return CouponPostResDTOV1.of(couponRepository.save(couponEntityForSave));
+    }
+
+    @Transactional(readOnly = true)
+    public CouponGetByIdResDTOV1 getBy(Long id) {
+
+        CouponEntity couponEntityForCheck = couponRepository.findByIdAndDeletedAtIsNull(id).orElseThrow(
+                () -> new BadRequestException("존재하지 않는 쿠폰입니다.")
+        );
+
+        return CouponGetByIdResDTOV1.of(couponEntityForCheck);
     }
 }

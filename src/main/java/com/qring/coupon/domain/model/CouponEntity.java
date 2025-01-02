@@ -81,4 +81,17 @@ public class CouponEntity {
         this.createdBy = username;
         this.modifiedBy = username;
     }
+
+    public static CouponEntity createCouponEntity(String name, int discount, int totalQuantity, LocalDateTime openAt, LocalDateTime expiredAt, String username) {
+        return CouponEntity.builder()
+                .name(name)
+                .discount(discount)
+                .totalQuantity(totalQuantity)
+                .remainQuantity(totalQuantity)
+                .openAt(openAt)
+                .expiredAt(expiredAt)
+                .couponStatus(CouponStatus.INACTIVE)
+                .username(username)
+                .build();
+    }
 }

@@ -1,14 +1,18 @@
 package com.qring.coupon.domain.model;
 
 import com.qring.coupon.domain.model.constraint.CouponStatus;
-import com.qring.coupon.domain.model.constraint.StockStatus;
 import io.hypersistence.utils.hibernate.id.Tsid;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Entity
@@ -41,6 +45,9 @@ public class CouponEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "coupon_status", nullable = false)
     private CouponStatus couponStatus;
+
+    @OneToMany(mappedBy = "coupon", cascade = CascadeType.REMOVE)
+    List<UserCouponEntity> userCouponEntityList = new ArrayList<>();
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)

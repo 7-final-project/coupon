@@ -36,10 +36,6 @@ public class CouponEntity {
     private LocalDateTime expiredAt;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "stock_status", nullable = false)
-    private StockStatus stockStatus;
-
-    @Enumerated(EnumType.STRING)
     @Column(name = "coupon_status", nullable = false)
     private CouponStatus couponStatus;
 
@@ -70,7 +66,6 @@ public class CouponEntity {
         this.remainQuantity = totalQuantity;
         this.openAt = openAt;
         this.expiredAt = expiredAt;
-        this.stockStatus = StockStatus.IN_STOCK;
         this.couponStatus = CouponStatus.INACTIVE;
     }
 }

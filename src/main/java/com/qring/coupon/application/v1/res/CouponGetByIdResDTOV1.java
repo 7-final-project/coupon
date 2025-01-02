@@ -2,7 +2,6 @@ package com.qring.coupon.application.v1.res;
 
 import com.qring.coupon.domain.model.CouponEntity;
 import com.qring.coupon.domain.model.constraint.CouponStatus;
-import com.qring.coupon.domain.model.constraint.StockStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

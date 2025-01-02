@@ -31,7 +31,7 @@ public interface CouponControllerSwagger {
             @ApiResponse(responseCode = "400", description = "쿠폰 생성 실패.", content = @Content(schema = @Schema(implementation = ResDTO.class)))
     })
     @PostMapping
-    ResponseEntity<ResDTO<CouponPostResDTOV1>> postBy(@RequestHeader("X-User-Id") Long userId,
+    ResponseEntity<ResDTO<CouponPostResDTOV1>> postBy(@RequestHeader("X-Passport-Token") String token,
                                                       @Valid @RequestBody PostCouponReqDTOV1 dto);
 
     @Operation(summary = "쿠폰 발급", description = "사용자의 Id 를 기준으로 유저쿠폰을 발급하는 API 입니다.")

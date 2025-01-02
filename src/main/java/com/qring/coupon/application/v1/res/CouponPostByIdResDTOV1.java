@@ -16,31 +16,12 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class CouponPostByIdResDTOV1 {
 
-    private UserCoupon userCoupon;
+    private Coupon coupon;
 
-    public static CouponPostByIdResDTOV1 of(UserCouponEntity userCouponEntity) {
+    public static CouponPostByIdResDTOV1 of(CouponEntity couponEntity) {
         return CouponPostByIdResDTOV1.builder()
-                .userCoupon(UserCoupon.from(userCouponEntity))
+                .coupon(Coupon.from(couponEntity))
                 .build();
-    }
-
-    @Getter
-    @Builder
-    @NoArgsConstructor
-    @AllArgsConstructor
-    private static class UserCoupon {
-
-        private Long id;
-        private Long userId;
-        private Coupon coupon;
-
-        public static UserCoupon from(UserCouponEntity userCouponEntity) {
-            return UserCoupon.builder()
-                    .id(userCouponEntity.getId())
-                    .userId(userCouponEntity.getUserId())
-                    .coupon(Coupon.from(userCouponEntity.getCouponEntity()))
-                    .build();
-        }
     }
 
     @Getter

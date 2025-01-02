@@ -65,16 +65,11 @@ public class CouponControllerV1 implements CouponControllerSwagger {
                 .expiredAt(LocalDateTime.of(2025, 1, 15, 12, 0))
                 .build();
 
-        UserCouponEntity dummyUserCouponEntity = UserCouponEntity.builder()
-                .couponEntity(dummyCouponEntity)
-                .userId(userId)
-                .build();
-
         return new ResponseEntity<>(
                 ResDTO.<CouponPostByIdResDTOV1>builder()
                         .code(HttpStatus.CREATED.value())
                         .message("쿠폰 발급에 성공하였습니다.")
-                        .data(CouponPostByIdResDTOV1.of(dummyUserCouponEntity))
+                        .data(CouponPostByIdResDTOV1.of(dummyCouponEntity))
                         .build(),
                 HttpStatus.CREATED
         );

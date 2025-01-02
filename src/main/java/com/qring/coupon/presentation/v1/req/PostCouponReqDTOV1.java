@@ -18,7 +18,7 @@ public class PostCouponReqDTOV1 {
     private Coupon coupon;
 
     @Getter
-    private static class Coupon {
+    public static class Coupon {
 
         @NotBlank(message = "쿠폰 이름을 입력해주세요.")
         private String name;

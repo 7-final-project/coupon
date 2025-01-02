@@ -2,6 +2,7 @@ package com.qring.coupon.infrastructure.docs;
 
 import com.qring.coupon.application.global.dto.ResDTO;
 import com.qring.coupon.application.v1.res.CouponGetByIdResDTOV1;
+import com.qring.coupon.application.v1.res.CouponPostByIdResDTOV1;
 import com.qring.coupon.application.v1.res.CouponPostResDTOV1;
 import com.qring.coupon.application.v1.res.CouponSearchResDTOV1;
 import com.qring.coupon.domain.model.constraint.CouponStatus;
@@ -32,6 +33,15 @@ public interface CouponControllerSwagger {
     @PostMapping
     ResponseEntity<ResDTO<CouponPostResDTOV1>> postBy(@RequestHeader("X-User-Id") Long userId,
                                                       @Valid @RequestBody PostCouponReqDTOV1 dto);
+
+    @Operation(summary = "쿠폰 발급", description = "사용자의 Id 를 기준으로 유저쿠폰을 발급하는 API 입니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "쿠폰 발급 성공", content = @Content(schema = @Schema(implementation = ResDTO.class))),
+            @ApiResponse(responseCode = "400", description = "쿠폰 발급 실패.", content = @Content(schema = @Schema(implementation = ResDTO.class)))
+    })
+    @PostMapping("/{id}/issue")
+    ResponseEntity<ResDTO<CouponPostByIdResDTOV1>> postBy(@RequestHeader("X-User-Id") Long userId,
+                                                          @Valid @PathVariable Long id);
 
     @Operation(summary = "쿠폰 검색", description = "쿠폰을 검색하는 API 입니다.")
     @ApiResponses(value = {

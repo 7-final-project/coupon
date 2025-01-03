@@ -79,7 +79,7 @@ public interface CouponControllerSwagger {
             @ApiResponse(responseCode = "400", description = "쿠폰 삭제 실패.", content = @Content(schema = @Schema(implementation = ResDTO.class)))
     })
     @DeleteMapping("/{id}")
-    ResponseEntity<ResDTO<Object>> deleteBy(@RequestHeader("X-User-Id") Long userId,
+    ResponseEntity<ResDTO<Object>> deleteBy(@RequestHeader("X-Passport-Token") String token,
                                             @PathVariable Long id);
 
 }

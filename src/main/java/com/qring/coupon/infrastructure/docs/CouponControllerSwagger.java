@@ -69,7 +69,7 @@ public interface CouponControllerSwagger {
             @ApiResponse(responseCode = "400", description = "쿠폰 수정 실패.", content = @Content(schema = @Schema(implementation = ResDTO.class)))
     })
     @PutMapping("/{id}")
-    ResponseEntity<ResDTO<Object>> putBy(@RequestHeader("X-User-Id") Long userId,
+    ResponseEntity<ResDTO<Object>> putBy(@RequestHeader("X-Passport-Token") String token,
                                          @PathVariable Long id,
                                          @Valid @RequestBody PutCouponReqDTOV1 dto);
 

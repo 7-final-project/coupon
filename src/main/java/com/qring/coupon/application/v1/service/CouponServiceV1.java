@@ -9,6 +9,8 @@ import com.qring.coupon.domain.model.CouponEntity;
 import com.qring.coupon.domain.repository.CouponRepository;
 import com.qring.coupon.infrastructure.util.PassportUtil;
 import com.qring.coupon.presentation.v1.req.PostCouponReqDTOV1;
+import com.qring.coupon.presentation.v1.req.PutCouponReqDTOV1;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,5 +56,34 @@ public class CouponServiceV1 {
         );
 
         return CouponGetByIdResDTOV1.of(couponEntityForCheck);
+    }
+
+    @Transactional
+    public void putBy(String token, Long id, PutCouponReqDTOV1 dto) {
+
+        CouponEntity couponEntityForCheck = couponRepository.findByIdAndDeletedAtIsNull(id).orElseThrow(
+                () -> new BadRequestException("존재하지 않는 쿠폰입니다.")
+        );
+
+        if(!PassportUtil.getRole(token).equals("관리자")){
+            throw new UnauthorizedAccessException("쿠폰 생성 권한이 없습니다.");
+        }
+
+        if(couponRepository.existsByNameAndDeletedAtIsNull(dto.getCoupon().getName())){
+            throw new DuplicateResourceException("이미 등록된 쿠폰 이름입니다.");
+        }
+
+        if(!dto.getCoupon().getOpenAt().isBefore(dto.getCoupon().getExpiredAt())){
+            throw new BadRequestException("쿠폰의 오픈 날짜는 만료 날짜보다 이전이어야 합니다.");
+        }
+
+        couponEntityForCheck.modifyCouponEntity(
+                dto.getCoupon().getName(),
+                dto.getCoupon().getDiscount(),
+                dto.getCoupon().getTotalQuantity(),
+                dto.getCoupon().getOpenAt(),
+                dto.getCoupon().getExpiredAt(),
+                PassportUtil.getUsername(token)
+        );
     }
 }

@@ -3,6 +3,9 @@ package com.qring.coupon.domain.model;
 import com.qring.coupon.domain.model.constraint.CouponStatus;
 import io.hypersistence.utils.hibernate.id.Tsid;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -93,5 +96,14 @@ public class CouponEntity {
                 .couponStatus(CouponStatus.INACTIVE)
                 .username(username)
                 .build();
+    }
+
+    public void modifyCouponEntity(String name, int discount, int totalQuantity, LocalDateTime openAt, LocalDateTime expiredAt, String username) {
+        this.name = name;
+        this.discount = discount;
+        this.totalQuantity = totalQuantity;
+        this.remainQuantity = totalQuantity;
+        this.expiredAt = expiredAt;
+        this.modifiedBy = username;
     }
 }

@@ -120,9 +120,12 @@ public class CouponControllerV1 implements CouponControllerSwagger {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ResDTO<Object>> putBy(@RequestHeader("X-User-Id") Long userId,
+    public ResponseEntity<ResDTO<Object>> putBy(@RequestHeader("X-Passport-Token") String token,
                                                 @PathVariable Long id,
                                                 @Valid @RequestBody PutCouponReqDTOV1 dto){
+
+        couponServiceV1.putBy(token, id, dto);
+
         return new ResponseEntity<>(
                 ResDTO.builder()
                         .code(HttpStatus.OK.value())

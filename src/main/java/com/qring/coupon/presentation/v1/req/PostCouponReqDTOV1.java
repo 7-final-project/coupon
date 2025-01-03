@@ -1,5 +1,6 @@
 package com.qring.coupon.presentation.v1.req;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -18,7 +19,7 @@ public class PostCouponReqDTOV1 {
     private Coupon coupon;
 
     @Getter
-    private static class Coupon {
+    public static class Coupon {
 
         @NotBlank(message = "쿠폰 이름을 입력해주세요.")
         private String name;
@@ -30,9 +31,11 @@ public class PostCouponReqDTOV1 {
         private int totalQuantity;
 
         @NotNull(message = "쿠폰 오픈 시간을 입력해주세요.")
+        @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
         private LocalDateTime openAt;
 
         @NotNull(message = "쿠폰 만료 일자를 입력해주세요.")
+        @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
         private LocalDateTime expiredAt;
 
     }

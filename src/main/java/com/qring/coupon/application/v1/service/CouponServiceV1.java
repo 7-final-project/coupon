@@ -86,4 +86,15 @@ public class CouponServiceV1 {
                 PassportUtil.getUsername(token)
         );
     }
+
+    @Transactional
+    public void deleteBy(String token, Long id) {
+
+        CouponEntity couponEntityForCheck = couponRepository.findByIdAndDeletedAtIsNull(id).orElseThrow(
+                () -> new BadRequestException("존재하지 않는 쿠폰입니다.")
+        );
+
+        couponEntityForCheck.markAsDelete(PassportUtil.getUsername(token));
+
+    }
 }

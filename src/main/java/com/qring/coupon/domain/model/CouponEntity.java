@@ -106,4 +106,9 @@ public class CouponEntity {
         this.expiredAt = expiredAt;
         this.modifiedBy = username;
     }
+
+    public void markAsDelete(String username){
+        this.deletedAt = LocalDateTime.now();
+        this.deletedBy = username;
+    }
 }

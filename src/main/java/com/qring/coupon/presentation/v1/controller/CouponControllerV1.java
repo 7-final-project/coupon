@@ -136,8 +136,11 @@ public class CouponControllerV1 implements CouponControllerSwagger {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ResDTO<Object>> deleteBy(@RequestHeader("X-User-Id") Long userId,
+    public ResponseEntity<ResDTO<Object>> deleteBy(@RequestHeader("X-Passport-Token") String token,
                                                    @PathVariable Long id){
+
+        couponServiceV1.deleteBy(token, id);
+
         return new ResponseEntity<>(
                 ResDTO.builder()
                         .code(HttpStatus.OK.value())

@@ -10,6 +10,8 @@ public interface CouponRepository {
 
     boolean existsByNameAndDeletedAtIsNull(String name);
 
+    boolean existsByNameAndIdNotAndDeletedAtIsNull(String name, Long id);
+
     CouponEntity save(CouponEntity couponEntity);
 
 }

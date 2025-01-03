@@ -21,6 +21,10 @@ public class CouponRepositoryImpl implements CouponRepository {
         return jpaCouponRepository.existsByNameAndDeletedAtIsNull(name);
     }
 
+    public boolean existsByNameAndIdNotAndDeletedAtIsNull(String name, Long id) {
+        return jpaCouponRepository.existsByNameAndIdNotAndDeletedAtIsNull(name, id);
+    }
+
     public CouponEntity save(CouponEntity couponEntity) {
         return jpaCouponRepository.save(couponEntity);
     }

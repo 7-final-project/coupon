@@ -11,4 +11,6 @@ public interface JpaCouponRepository extends JpaRepository<CouponEntity, Long> {
 
     boolean existsByNameAndDeletedAtIsNull(String name);
 
+    boolean existsByNameAndIdNotAndDeletedAtIsNull(String name, Long id);
+
 }

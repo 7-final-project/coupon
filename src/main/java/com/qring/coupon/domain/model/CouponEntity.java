@@ -1,11 +1,9 @@
 package com.qring.coupon.domain.model;
 
 import com.qring.coupon.domain.model.constraint.CouponStatus;
+import com.qring.coupon.domain.model.constraint.IssuanceStatus;
 import io.hypersistence.utils.hibernate.id.Tsid;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -49,6 +47,10 @@ public class CouponEntity {
     @Column(name = "coupon_status", nullable = false)
     private CouponStatus couponStatus;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "issuance_status", nullable = false)
+    private IssuanceStatus issuanceStatus;
+
     @OneToMany(mappedBy = "couponEntity", cascade = CascadeType.REMOVE)
     List<UserCouponEntity> userCouponEntityList = new ArrayList<>();
 
@@ -73,7 +75,7 @@ public class CouponEntity {
     private String deletedBy;
 
     @Builder
-    public CouponEntity(String name, int discount, int totalQuantity, int remainQuantity, LocalDateTime openAt, LocalDateTime expiredAt, CouponStatus couponStatus, String username) {
+    public CouponEntity(String name, int discount, int totalQuantity, int remainQuantity, LocalDateTime openAt, LocalDateTime expiredAt, CouponStatus couponStatus, IssuanceStatus issuanceStatus, String username) {
         this.name = name;
         this.discount = discount;
         this.totalQuantity = totalQuantity;
@@ -81,6 +83,7 @@ public class CouponEntity {
         this.openAt = openAt;
         this.expiredAt = expiredAt;
         this.couponStatus = couponStatus;
+        this.issuanceStatus = issuanceStatus;
         this.createdBy = username;
         this.modifiedBy = username;
     }
@@ -94,16 +97,20 @@ public class CouponEntity {
                 .openAt(openAt)
                 .expiredAt(expiredAt)
                 .couponStatus(CouponStatus.INACTIVE)
+                .issuanceStatus(IssuanceStatus.CLOSED)
                 .username(username)
                 .build();
     }
 
-    public void modifyCouponEntity(String name, int discount, int totalQuantity, LocalDateTime openAt, LocalDateTime expiredAt, String username) {
+    public void modifyCouponEntity(String name, int discount, int totalQuantity, int remainQuantity, LocalDateTime openAt, LocalDateTime expiredAt, String couponStatus, String issuanceStatus, String username) {
         this.name = name;
         this.discount = discount;
         this.totalQuantity = totalQuantity;
-        this.remainQuantity = totalQuantity;
+        this.remainQuantity = remainQuantity;
+        this.openAt = openAt;
         this.expiredAt = expiredAt;
+        this.couponStatus = CouponStatus.fromString(couponStatus);
+        this.issuanceStatus = IssuanceStatus.fromString(issuanceStatus);
         this.modifiedBy = username;
     }
 

@@ -5,6 +5,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -27,7 +28,7 @@ public class PutCouponReqDTOV1 {
         @Positive(message = "쿠폰 할인 금액을 입력해주세요.")
         private int discount;
 
-        @Positive(message = "쿠폰 전체 개수를 입력해주세요.")
+        @PositiveOrZero(message = "쿠폰 전체 개수를 입력해주세요.")
         private int totalQuantity;
 
         @NotNull(message = "쿠폰 오픈 시간을 입력해주세요.")
@@ -37,6 +38,12 @@ public class PutCouponReqDTOV1 {
         @NotNull(message = "쿠폰 만료 일자를 입력해주세요.")
         @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
         private LocalDateTime expiredAt;
+
+        @NotNull(message = "쿠폰 상태를 입력해주세요.")
+        private String couponStatus;
+
+        @NotNull(message = "쿠폰 발급 가능 여부를 입력해주세요.")
+        private String issuanceStatus;
 
     }
 

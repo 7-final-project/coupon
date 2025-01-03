@@ -9,13 +9,13 @@ public enum CouponStatus {
 
     INACTIVE(Status.INACTIVE),
     ACTIVE(Status.ACTIVE),
-    CLOSED(Status.CLOSED);
+    EXPIRED(Status.EXPIRED);
 
     private final String status;
 
     public static final class Status {
         public static final String INACTIVE = "비활성";
         public static final String ACTIVE = "활성";
-        public static final String CLOSED = "종료";
+        public static final String EXPIRED = "만료";
     }
 }

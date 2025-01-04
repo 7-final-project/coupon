@@ -27,11 +27,7 @@ public class CouponServiceV1 {
     @Transactional
     public CouponPostResDTOV1 postBy(String token, PostCouponReqDTOV1 dto) {
 
-        validateRole(token);
-
-        validateCouponNameDuplicate(dto.getCoupon().getName());
-
-        validateCouponDateRange(dto.getCoupon().getOpenAt(), dto.getCoupon().getExpiredAt());
+        validateCouponCreationProcess(token, dto);
 
         CouponEntity couponEntityForSave = CouponEntity.createCouponEntity(
                 dto.getCoupon().getName(),
@@ -88,6 +84,16 @@ public class CouponServiceV1 {
 
         couponEntityForCheck.markAsDelete(PassportUtil.getUsername(token));
         
+    }
+
+    // -----
+    // NOTE : 쿠폰 생성 검증 프로세스
+    private void validateCouponCreationProcess(String token, PostCouponReqDTOV1 dto) {
+        validateRole(token);
+
+        validateCouponNameDuplicate(dto.getCoupon().getName());
+
+        validateCouponDateRange(dto.getCoupon().getOpenAt(), dto.getCoupon().getExpiredAt());
     }
 
     // -----

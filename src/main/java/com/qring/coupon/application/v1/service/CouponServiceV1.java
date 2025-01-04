@@ -2,6 +2,7 @@ package com.qring.coupon.application.v1.service;
 
 import com.qring.coupon.application.global.exception.BadRequestException;
 import com.qring.coupon.application.global.exception.DuplicateResourceException;
+import com.qring.coupon.application.global.exception.EntityNotFoundException;
 import com.qring.coupon.application.global.exception.UnauthorizedAccessException;
 import com.qring.coupon.application.v1.res.CouponGetByIdResDTOV1;
 import com.qring.coupon.application.v1.res.CouponPostResDTOV1;
@@ -59,7 +60,7 @@ public class CouponServiceV1 {
 
         validateRole(token);
 
-        validateCouponNameDuplicationExcludingCurrentId(id, dto);
+        validateCouponNameDuplicationExcludingCurrentId(id, dto.getCoupon().getName());
 
         int remainQuantity = getRemainQuantity(dto, couponEntityForCheck);
 
@@ -93,7 +94,7 @@ public class CouponServiceV1 {
     // NOTE : 쿠폰 존재 여부 검증
     private CouponEntity getCouponEntityById(Long id) {
         return couponRepository.findByIdAndDeletedAtIsNull(id).orElseThrow(
-                () -> new BadRequestException("존재하지 않는 쿠폰입니다.")
+                () -> new EntityNotFoundException("존재하지 않는 쿠폰입니다.")
         );
     }
 
@@ -115,8 +116,8 @@ public class CouponServiceV1 {
 
     // -----
     // NOTE : 현재 쿠폰 이외의 이름 중복 검증
-    private void validateCouponNameDuplicationExcludingCurrentId(Long id, PutCouponReqDTOV1 dto) {
-        if(couponRepository.existsByNameAndIdNotAndDeletedAtIsNull(dto.getCoupon().getName(), id)){
+    private void validateCouponNameDuplicationExcludingCurrentId(Long id, String name) {
+        if(couponRepository.existsByNameAndIdNotAndDeletedAtIsNull(name, id)){
             throw new DuplicateResourceException("이미 등록된 쿠폰 이름입니다.");
         }
     }

@@ -58,7 +58,7 @@ public class CouponServiceV1 {
 
         validateCouponNameDuplicate(id, dto.getCoupon().getName());
 
-        int remainQuantity = getRemainQuantity(dto, couponEntityForModification);
+        int remainQuantity = getRemainQuantity(dto.getCoupon().getTotalQuantity(), couponEntityForModification);
 
         String issuanceStatus = getIssuanceStatus(dto.getCoupon().getIssuanceStatus(), remainQuantity);
 
@@ -130,12 +130,12 @@ public class CouponServiceV1 {
 
     // -----
     // NOTE : 쿠폰 잔여 개수 반환
-    private int getRemainQuantity(PutCouponReqDTOV1 dto, CouponEntity couponEntityForCheck) {
-        int totalQuantity = couponEntityForCheck.getTotalQuantity();
-        int remainQuantity = couponEntityForCheck.getRemainQuantity();
+    private int getRemainQuantity(int reqTotalQuantity, CouponEntity couponEntityForModification) {
+        int totalQuantity = couponEntityForModification.getTotalQuantity();
+        int remainQuantity = couponEntityForModification.getRemainQuantity();
 
-        if (totalQuantity != dto.getCoupon().getTotalQuantity()) {
-            int count = dto.getCoupon().getTotalQuantity() - totalQuantity;
+        if (totalQuantity != reqTotalQuantity) {
+            int count = reqTotalQuantity - totalQuantity;
             remainQuantity += count;
             if (remainQuantity < 0) {
                 throw new BadRequestException("쿠폰 잔여 개수가 부족합니다.");

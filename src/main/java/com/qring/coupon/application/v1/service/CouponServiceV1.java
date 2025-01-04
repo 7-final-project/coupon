@@ -54,7 +54,7 @@ public class CouponServiceV1 {
 
         CouponEntity couponEntityForCheck = getCouponEntityById(id);
 
-        validateRole(passport);
+        validateMasterRole(passport);
 
         validateCouponNameDuplicationExcludingCurrentId(id, dto.getCoupon().getName());
 
@@ -89,7 +89,7 @@ public class CouponServiceV1 {
     // -----
     // NOTE : 쿠폰 생성 검증 프로세스
     private void validateCouponCreationProcess(String passport, PostCouponReqDTOV1 dto) {
-        validateRole(passport);
+        validateMasterRole(passport);
 
         validateCouponNameDuplicate(dto.getCoupon().getName());
 
@@ -106,7 +106,7 @@ public class CouponServiceV1 {
 
     // -----
     // NOTE : 관리자 권한 검증
-    private void validateRole(String passport) {
+    private void validateMasterRole(String passport) {
         if(!PassportUtil.getRole(passport).equals("관리자")){
             throw new UnauthorizedAccessException("쿠폰 생성 권한이 없습니다.");
         }

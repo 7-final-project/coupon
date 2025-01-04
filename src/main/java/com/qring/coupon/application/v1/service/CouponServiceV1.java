@@ -44,27 +44,27 @@ public class CouponServiceV1 {
     @Transactional(readOnly = true)
     public CouponGetByIdResDTOV1 getBy(Long id) {
 
-        CouponEntity couponEntityForCheck = getCouponEntityById(id);
+        CouponEntity couponEntityForMapping = getCouponEntityById(id);
 
-        return CouponGetByIdResDTOV1.of(couponEntityForCheck);
+        return CouponGetByIdResDTOV1.of(couponEntityForMapping);
     }
 
     @Transactional
     public void putBy(String passport, Long id, PutCouponReqDTOV1 dto) {
 
-        CouponEntity couponEntityForCheck = getCouponEntityById(id);
+        CouponEntity couponEntityForModification = getCouponEntityById(id);
 
         validateMasterRole(passport);
 
         validateCouponNameDuplicationExcludingCurrentId(id, dto.getCoupon().getName());
 
-        int remainQuantity = getRemainQuantity(dto, couponEntityForCheck);
+        int remainQuantity = getRemainQuantity(dto, couponEntityForModification);
 
         String issuanceStatus = getIssuanceStatus(dto.getCoupon().getIssuanceStatus(), remainQuantity);
 
         validateCouponDateRange(dto.getCoupon().getOpenAt(), dto.getCoupon().getExpiredAt());
 
-        couponEntityForCheck.modifyCouponEntity(
+        couponEntityForModification.modifyCouponEntity(
                 dto.getCoupon().getName(),
                 dto.getCoupon().getDiscount(),
                 dto.getCoupon().getTotalQuantity(),
@@ -80,9 +80,9 @@ public class CouponServiceV1 {
     @Transactional
     public void deleteBy(String passport, Long id) {
 
-        CouponEntity couponEntityForCheck = getCouponEntityById(id);
+        CouponEntity couponEntityForDeletion = getCouponEntityById(id);
 
-        couponEntityForCheck.deletedCouponEntity(PassportUtil.getUsername(passport));
+        couponEntityForDeletion.deletedCouponEntity(PassportUtil.getUsername(passport));
         
     }
 

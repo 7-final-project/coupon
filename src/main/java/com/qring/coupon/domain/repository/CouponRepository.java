@@ -1,6 +1,8 @@
 package com.qring.coupon.domain.repository;
 
 import com.qring.coupon.domain.model.CouponEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.Optional;
 
@@ -12,6 +14,7 @@ public interface CouponRepository {
 
     boolean existsByNameAndIdNotAndDeletedAtIsNull(String name, Long id);
 
-    CouponEntity save(CouponEntity couponEntity);
+    Page<CouponEntity> couponEntityPageByDeletedAtIsNullWithConditions(Pageable pageable, Long userId, String name, String couponStatus, String issuanceStatus, String sort);
 
+    CouponEntity save(CouponEntity couponEntity);
 }

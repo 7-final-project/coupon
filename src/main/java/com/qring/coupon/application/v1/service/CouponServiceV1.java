@@ -82,7 +82,7 @@ public class CouponServiceV1 {
 
         CouponEntity couponEntityForCheck = getCouponEntityById(id);
 
-        couponEntityForCheck.markAsDelete(PassportUtil.getUsername(passport));
+        couponEntityForCheck.deletedCouponEntity(PassportUtil.getUsername(passport));
         
     }
 

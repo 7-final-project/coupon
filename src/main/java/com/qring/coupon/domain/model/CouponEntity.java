@@ -114,7 +114,7 @@ public class CouponEntity {
         this.modifiedBy = username;
     }
 
-    public void markAsDelete(String username){
+    public void deletedCouponEntity(String username){
         this.deletedAt = LocalDateTime.now();
         this.deletedBy = username;
     }

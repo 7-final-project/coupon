@@ -25,9 +25,9 @@ public class CouponServiceV1 {
     private final CouponRepository couponRepository;
 
     @Transactional
-    public CouponPostResDTOV1 postBy(String token, PostCouponReqDTOV1 dto) {
+    public CouponPostResDTOV1 postBy(String passport, PostCouponReqDTOV1 dto) {
 
-        validateCouponCreationProcess(token, dto);
+        validateCouponCreationProcess(passport, dto);
 
         CouponEntity couponEntityForSave = CouponEntity.createCouponEntity(
                 dto.getCoupon().getName(),
@@ -35,7 +35,7 @@ public class CouponServiceV1 {
                 dto.getCoupon().getTotalQuantity(),
                 dto.getCoupon().getOpenAt(),
                 dto.getCoupon().getExpiredAt(),
-                PassportUtil.getUsername(token)
+                PassportUtil.getUsername(passport)
         );
 
         return CouponPostResDTOV1.of(couponRepository.save(couponEntityForSave));
@@ -50,11 +50,11 @@ public class CouponServiceV1 {
     }
 
     @Transactional
-    public void putBy(String token, Long id, PutCouponReqDTOV1 dto) {
+    public void putBy(String passport, Long id, PutCouponReqDTOV1 dto) {
 
         CouponEntity couponEntityForCheck = getCouponEntityById(id);
 
-        validateRole(token);
+        validateRole(passport);
 
         validateCouponNameDuplicationExcludingCurrentId(id, dto.getCoupon().getName());
 
@@ -73,23 +73,23 @@ public class CouponServiceV1 {
                 dto.getCoupon().getExpiredAt(),
                 dto.getCoupon().getCouponStatus(),
                 issuanceStatus,
-                PassportUtil.getUsername(token)
+                PassportUtil.getUsername(passport)
         );
     }
 
     @Transactional
-    public void deleteBy(String token, Long id) {
+    public void deleteBy(String passport, Long id) {
 
         CouponEntity couponEntityForCheck = getCouponEntityById(id);
 
-        couponEntityForCheck.markAsDelete(PassportUtil.getUsername(token));
+        couponEntityForCheck.markAsDelete(PassportUtil.getUsername(passport));
         
     }
 
     // -----
     // NOTE : 쿠폰 생성 검증 프로세스
-    private void validateCouponCreationProcess(String token, PostCouponReqDTOV1 dto) {
-        validateRole(token);
+    private void validateCouponCreationProcess(String passport, PostCouponReqDTOV1 dto) {
+        validateRole(passport);
 
         validateCouponNameDuplicate(dto.getCoupon().getName());
 
@@ -106,8 +106,8 @@ public class CouponServiceV1 {
 
     // -----
     // NOTE : 관리자 권한 검증
-    private void validateRole(String token) {
-        if(!PassportUtil.getRole(token).equals("관리자")){
+    private void validateRole(String passport) {
+        if(!PassportUtil.getRole(passport).equals("관리자")){
             throw new UnauthorizedAccessException("쿠폰 생성 권한이 없습니다.");
         }
     }

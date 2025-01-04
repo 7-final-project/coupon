@@ -33,13 +33,13 @@ public class CouponControllerV1 implements CouponControllerSwagger {
     private final CouponServiceV1 couponServiceV1;
 
     @PostMapping
-    public ResponseEntity<ResDTO<CouponPostResDTOV1>> postBy(@RequestHeader("X-Passport-Token") String token,
+    public ResponseEntity<ResDTO<CouponPostResDTOV1>> postBy(@RequestHeader("X-Passport-Token") String passport,
                                                              @Valid @RequestBody PostCouponReqDTOV1 dto){
         return new ResponseEntity<>(
                 ResDTO.<CouponPostResDTOV1>builder()
                         .code(HttpStatus.CREATED.value())
                         .message("쿠폰 생성에 성공하였습니다.")
-                        .data(couponServiceV1.postBy(token, dto))
+                        .data(couponServiceV1.postBy(passport, dto))
                         .build(),
                 HttpStatus.CREATED
         );
@@ -120,11 +120,11 @@ public class CouponControllerV1 implements CouponControllerSwagger {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ResDTO<Object>> putBy(@RequestHeader("X-Passport-Token") String token,
+    public ResponseEntity<ResDTO<Object>> putBy(@RequestHeader("X-Passport-Token") String passport,
                                                 @PathVariable Long id,
                                                 @Valid @RequestBody PutCouponReqDTOV1 dto){
 
-        couponServiceV1.putBy(token, id, dto);
+        couponServiceV1.putBy(passport, id, dto);
 
         return new ResponseEntity<>(
                 ResDTO.builder()
@@ -136,10 +136,10 @@ public class CouponControllerV1 implements CouponControllerSwagger {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ResDTO<Object>> deleteBy(@RequestHeader("X-Passport-Token") String token,
+    public ResponseEntity<ResDTO<Object>> deleteBy(@RequestHeader("X-Passport-Token") String passport,
                                                    @PathVariable Long id){
 
-        couponServiceV1.deleteBy(token, id);
+        couponServiceV1.deleteBy(passport, id);
 
         return new ResponseEntity<>(
                 ResDTO.builder()

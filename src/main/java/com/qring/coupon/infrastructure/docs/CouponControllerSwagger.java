@@ -5,7 +5,6 @@ import com.qring.coupon.application.v1.res.CouponGetByIdResDTOV1;
 import com.qring.coupon.application.v1.res.CouponPostByIdResDTOV1;
 import com.qring.coupon.application.v1.res.CouponPostResDTOV1;
 import com.qring.coupon.application.v1.res.CouponSearchResDTOV1;
-import com.qring.coupon.domain.model.constraint.CouponStatus;
 import com.qring.coupon.presentation.v1.req.PostCouponReqDTOV1;
 import com.qring.coupon.presentation.v1.req.PutCouponReqDTOV1;
 import io.swagger.v3.oas.annotations.Operation;
@@ -50,9 +49,10 @@ public interface CouponControllerSwagger {
     })
     @GetMapping
     ResponseEntity<ResDTO<CouponSearchResDTOV1>> searchBy(@PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
-                                                          @RequestParam(name = "id", required = false) Long couponId,
+                                                          @RequestParam(name = "userId", required = false) Long couponId,
                                                           @RequestParam(name = "name", required = false) String name,
-                                                          @RequestParam(name = "couponStatus", required = false) CouponStatus couponStatus,
+                                                          @RequestParam(name = "couponStatus", required = false) String couponStatus,
+                                                          @RequestParam(name = "issuanceStatus", required = false) String issuanceStatus,
                                                           @RequestParam(name = "sort", required = false) String sort);
 
     @Operation(summary = "쿠폰 단건 조회", description = "쿠폰 Id 를 기준으로 쿠폰을 단건 조회하는 API 입니다.")

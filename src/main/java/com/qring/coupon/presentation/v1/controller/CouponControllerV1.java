@@ -7,14 +7,11 @@ import com.qring.coupon.application.v1.res.CouponPostResDTOV1;
 import com.qring.coupon.application.v1.res.CouponSearchResDTOV1;
 import com.qring.coupon.application.v1.service.CouponServiceV1;
 import com.qring.coupon.domain.model.CouponEntity;
-import com.qring.coupon.domain.model.constraint.CouponStatus;
 import com.qring.coupon.infrastructure.docs.CouponControllerSwagger;
 import com.qring.coupon.presentation.v1.req.PostCouponReqDTOV1;
 import com.qring.coupon.presentation.v1.req.PutCouponReqDTOV1;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -23,7 +20,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -70,38 +66,16 @@ public class CouponControllerV1 implements CouponControllerSwagger {
 
     @GetMapping
     public ResponseEntity<ResDTO<CouponSearchResDTOV1>> searchBy(@PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
-                                                                 @RequestParam(name = "id", required = false) Long couponId,
+                                                                 @RequestParam(name = "userId", required = false) Long userId,
                                                                  @RequestParam(name = "name", required = false) String name,
-                                                                 @RequestParam(name = "couponStatus", required = false) CouponStatus couponStatus,
+                                                                 @RequestParam(name = "couponStatus", required = false) String couponStatus,
+                                                                 @RequestParam(name = "issuanceStatus", required = false) String issuanceStatus,
                                                                  @RequestParam(name = "sort", required = false) String sort) {
-        /*
-         * TODO :  더미데이터입니다.
-         * */
-        List<CouponEntity> dummyCouponList = List.of(
-                CouponEntity.builder()
-                        .name("쿠폰1")
-                        .discount(1000)
-                        .totalQuantity(100)
-                        .openAt(LocalDateTime.of(2024, 12, 31, 12, 0))
-                        .expiredAt(LocalDateTime.of(2025, 1, 15, 12, 0))
-                        .build(),
-
-                CouponEntity.builder()
-                        .name("쿠폰2")
-                        .discount(2000)
-                        .totalQuantity(100)
-                        .openAt(LocalDateTime.of(2024, 12, 31, 12, 0))
-                        .expiredAt(LocalDateTime.of(2025, 1, 15, 12, 0))
-                        .build()
-        );
-
-        Page<CouponEntity> dummyPage = new PageImpl<>(dummyCouponList, pageable, dummyCouponList.size());
-
         return new ResponseEntity<>(
                 ResDTO.<CouponSearchResDTOV1>builder()
                         .code(HttpStatus.OK.value())
                         .message("쿠폰 검색에 성공하였습니다.")
-                        .data(CouponSearchResDTOV1.of(dummyPage))
+                        .data(couponServiceV1.searchBy(pageable, userId, name, couponStatus, issuanceStatus, sort))
                         .build(),
                 HttpStatus.OK
         );

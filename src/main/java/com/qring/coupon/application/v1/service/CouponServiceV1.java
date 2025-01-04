@@ -6,6 +6,7 @@ import com.qring.coupon.application.global.exception.EntityNotFoundException;
 import com.qring.coupon.application.global.exception.UnauthorizedAccessException;
 import com.qring.coupon.application.v1.res.CouponGetByIdResDTOV1;
 import com.qring.coupon.application.v1.res.CouponPostResDTOV1;
+import com.qring.coupon.application.v1.res.CouponSearchResDTOV1;
 import com.qring.coupon.domain.model.CouponEntity;
 import com.qring.coupon.domain.model.constraint.IssuanceStatus;
 import com.qring.coupon.domain.repository.CouponRepository;
@@ -13,6 +14,8 @@ import com.qring.coupon.infrastructure.util.PassportUtil;
 import com.qring.coupon.presentation.v1.req.PostCouponReqDTOV1;
 import com.qring.coupon.presentation.v1.req.PutCouponReqDTOV1;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.builder.Builder;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,6 +42,11 @@ public class CouponServiceV1 {
         );
 
         return CouponPostResDTOV1.of(couponRepository.save(couponEntityForSave));
+    }
+
+    @Transactional(readOnly = true)
+    public CouponSearchResDTOV1 searchBy(Pageable pageable, Long userId, String name, String couponStatus, String issuanceStatus, String sort) {
+        return CouponSearchResDTOV1.of(couponRepository.couponEntityPageByDeletedAtIsNullWithConditions(pageable, userId, name, couponStatus, issuanceStatus, sort));
     }
 
     @Transactional(readOnly = true)

@@ -56,7 +56,7 @@ public class CouponServiceV1 {
 
         validateMasterRole(passport);
 
-        validateCouponNameDuplicationExcludingCurrentId(id, dto.getCoupon().getName());
+        validateCouponNameDuplicate(id, dto.getCoupon().getName());
 
         int remainQuantity = getRemainQuantity(dto, couponEntityForModification);
 
@@ -122,7 +122,7 @@ public class CouponServiceV1 {
 
     // -----
     // NOTE : 현재 쿠폰 이외의 이름 중복 검증
-    private void validateCouponNameDuplicationExcludingCurrentId(Long id, String name) {
+    private void validateCouponNameDuplicate(Long id, String name) {
         if (couponRepository.existsByNameAndIdNotAndDeletedAtIsNull(name, id)) {
             throw new DuplicateResourceException("이미 등록된 쿠폰 이름입니다.");
         }

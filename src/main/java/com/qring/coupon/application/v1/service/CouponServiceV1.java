@@ -83,7 +83,7 @@ public class CouponServiceV1 {
         CouponEntity couponEntityForDeletion = getCouponEntityById(id);
 
         couponEntityForDeletion.deletedCouponEntity(PassportUtil.getUsername(passport));
-        
+
     }
 
     // -----
@@ -107,7 +107,7 @@ public class CouponServiceV1 {
     // -----
     // NOTE : 관리자 권한 검증
     private void validateMasterRole(String passport) {
-        if(!PassportUtil.getRole(passport).equals("관리자")){
+        if (!PassportUtil.getRole(passport).equals("관리자")) {
             throw new UnauthorizedAccessException("쿠폰 생성 권한이 없습니다.");
         }
     }
@@ -115,7 +115,7 @@ public class CouponServiceV1 {
     // -----
     // NOTE : 쿠폰 이름 중복 검증
     private void validateCouponNameDuplicate(String name) {
-        if(couponRepository.existsByNameAndDeletedAtIsNull(name)){
+        if (couponRepository.existsByNameAndDeletedAtIsNull(name)) {
             throw new DuplicateResourceException("이미 등록된 쿠폰 이름입니다.");
         }
     }
@@ -123,11 +123,11 @@ public class CouponServiceV1 {
     // -----
     // NOTE : 현재 쿠폰 이외의 이름 중복 검증
     private void validateCouponNameDuplicationExcludingCurrentId(Long id, String name) {
-        if(couponRepository.existsByNameAndIdNotAndDeletedAtIsNull(name, id)){
+        if (couponRepository.existsByNameAndIdNotAndDeletedAtIsNull(name, id)) {
             throw new DuplicateResourceException("이미 등록된 쿠폰 이름입니다.");
         }
     }
-    
+
     // -----
     // NOTE : 쿠폰 잔여 개수 반환
     private int getRemainQuantity(PutCouponReqDTOV1 dto, CouponEntity couponEntityForCheck) {
@@ -153,7 +153,7 @@ public class CouponServiceV1 {
     // -----
     // NOTE : 쿠폰 날짜 유효성 검증
     private void validateCouponDateRange(LocalDateTime openAt, LocalDateTime expiredAt) {
-        if(!openAt.isBefore(expiredAt)){
+        if (!openAt.isBefore(expiredAt)) {
             throw new BadRequestException("쿠폰의 오픈 날짜는 만료 날짜보다 이전이어야 합니다.");
         }
     }

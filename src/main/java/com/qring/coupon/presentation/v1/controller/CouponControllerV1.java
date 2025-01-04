@@ -34,7 +34,7 @@ public class CouponControllerV1 implements CouponControllerSwagger {
 
     @PostMapping
     public ResponseEntity<ResDTO<CouponPostResDTOV1>> postBy(@RequestHeader("X-Passport-Token") String passport,
-                                                             @Valid @RequestBody PostCouponReqDTOV1 dto){
+                                                             @Valid @RequestBody PostCouponReqDTOV1 dto) {
         return new ResponseEntity<>(
                 ResDTO.<CouponPostResDTOV1>builder()
                         .code(HttpStatus.CREATED.value())
@@ -47,7 +47,7 @@ public class CouponControllerV1 implements CouponControllerSwagger {
 
     @PostMapping("/{id}/issue")
     public ResponseEntity<ResDTO<CouponPostByIdResDTOV1>> postBy(@RequestHeader("X-User-Id") Long userId,
-                                                                 @PathVariable Long id){
+                                                                 @PathVariable Long id) {
         /*
          * TODO :  더미데이터입니다.
          */
@@ -73,7 +73,7 @@ public class CouponControllerV1 implements CouponControllerSwagger {
                                                                  @RequestParam(name = "id", required = false) Long couponId,
                                                                  @RequestParam(name = "name", required = false) String name,
                                                                  @RequestParam(name = "couponStatus", required = false) CouponStatus couponStatus,
-                                                                 @RequestParam(name = "sort", required = false) String sort){
+                                                                 @RequestParam(name = "sort", required = false) String sort) {
         /*
          * TODO :  더미데이터입니다.
          * */
@@ -108,7 +108,7 @@ public class CouponControllerV1 implements CouponControllerSwagger {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ResDTO<CouponGetByIdResDTOV1>> getBy(@PathVariable Long id){
+    public ResponseEntity<ResDTO<CouponGetByIdResDTOV1>> getBy(@PathVariable Long id) {
         return new ResponseEntity<>(
                 ResDTO.<CouponGetByIdResDTOV1>builder()
                         .code(HttpStatus.OK.value())
@@ -122,7 +122,7 @@ public class CouponControllerV1 implements CouponControllerSwagger {
     @PutMapping("/{id}")
     public ResponseEntity<ResDTO<Object>> putBy(@RequestHeader("X-Passport-Token") String passport,
                                                 @PathVariable Long id,
-                                                @Valid @RequestBody PutCouponReqDTOV1 dto){
+                                                @Valid @RequestBody PutCouponReqDTOV1 dto) {
 
         couponServiceV1.putBy(passport, id, dto);
 
@@ -137,7 +137,7 @@ public class CouponControllerV1 implements CouponControllerSwagger {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ResDTO<Object>> deleteBy(@RequestHeader("X-Passport-Token") String passport,
-                                                   @PathVariable Long id){
+                                                   @PathVariable Long id) {
 
         couponServiceV1.deleteBy(passport, id);
 

@@ -5,16 +5,18 @@ import com.qring.coupon.application.global.exception.DuplicateResourceException;
 import com.qring.coupon.application.global.exception.EntityNotFoundException;
 import com.qring.coupon.application.global.exception.UnauthorizedAccessException;
 import com.qring.coupon.application.v1.res.CouponGetByIdResDTOV1;
+import com.qring.coupon.application.v1.res.CouponPostByIdResDTOV1;
 import com.qring.coupon.application.v1.res.CouponPostResDTOV1;
 import com.qring.coupon.application.v1.res.CouponSearchResDTOV1;
 import com.qring.coupon.domain.model.CouponEntity;
+import com.qring.coupon.domain.model.UserCouponEntity;
 import com.qring.coupon.domain.model.constraint.IssuanceStatus;
 import com.qring.coupon.domain.repository.CouponRepository;
+import com.qring.coupon.domain.repository.UserCouponRepository;
 import com.qring.coupon.infrastructure.util.PassportUtil;
 import com.qring.coupon.presentation.v1.req.PostCouponReqDTOV1;
 import com.qring.coupon.presentation.v1.req.PutCouponReqDTOV1;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.builder.Builder;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +28,7 @@ import java.time.LocalDateTime;
 public class CouponServiceV1 {
 
     private final CouponRepository couponRepository;
+    private final UserCouponRepository userCouponRepository;
 
     @Transactional
     public CouponPostResDTOV1 postBy(String passport, PostCouponReqDTOV1 dto) {
@@ -42,6 +45,32 @@ public class CouponServiceV1 {
         );
 
         return CouponPostResDTOV1.of(couponRepository.save(couponEntityForSave));
+    }
+
+    @Transactional
+    public CouponPostByIdResDTOV1 issueBy(String passport, Long id) {
+
+        CouponEntity couponEntityForCheck = getCouponEntityById(id);
+
+        if (!couponEntityForCheck.getIssuanceStatus().getStatus().equals("개시")) {
+            throw new BadRequestException("해당 쿠폰은 발급이 불가능합니다.");
+        }
+
+        if (couponEntityForCheck.getRemainQuantity() <= 0) {
+            throw new BadRequestException("쿠폰이 매진되었습니다.");
+        }
+
+        if (userCouponRepository.existsByUserIdAndCouponEntity(PassportUtil.getUserId(passport), couponEntityForCheck)) {
+            throw new DuplicateResourceException("이미 보유하고 있는 쿠폰입니다.");
+        }
+
+        UserCouponEntity userCouponEntityForSave = UserCouponEntity.createUserCouponEntity(couponEntityForCheck, PassportUtil.getUserId(passport));
+        userCouponRepository.save(userCouponEntityForSave);
+
+        couponEntityForCheck.remainQuantityForDecrease();
+        couponRepository.save(couponEntityForCheck);
+
+        return CouponPostByIdResDTOV1.of(couponEntityForCheck);
     }
 
     @Transactional(readOnly = true)

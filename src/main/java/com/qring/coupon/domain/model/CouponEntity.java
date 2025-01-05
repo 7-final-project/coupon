@@ -1,5 +1,6 @@
 package com.qring.coupon.domain.model;
 
+import com.qring.coupon.application.global.exception.BadRequestException;
 import com.qring.coupon.domain.model.constraint.CouponStatus;
 import com.qring.coupon.domain.model.constraint.IssuanceStatus;
 import io.hypersistence.utils.hibernate.id.Tsid;
@@ -100,6 +101,14 @@ public class CouponEntity {
                 .issuanceStatus(IssuanceStatus.CLOSED)
                 .username(username)
                 .build();
+    }
+
+    public void remainQuantityForDecrease() {
+        if(this.remainQuantity <= 0){
+            throw new BadRequestException("재고 수량이 부족합니다.");
+        }
+
+        this.remainQuantity -= 1;
     }
 
     public void modifyCouponEntity(String name, int discount, int totalQuantity, int remainQuantity, LocalDateTime openAt, LocalDateTime expiredAt, String couponStatus, String issuanceStatus, String username) {

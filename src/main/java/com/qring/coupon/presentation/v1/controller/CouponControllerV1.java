@@ -6,7 +6,6 @@ import com.qring.coupon.application.v1.res.CouponPostByIdResDTOV1;
 import com.qring.coupon.application.v1.res.CouponPostResDTOV1;
 import com.qring.coupon.application.v1.res.CouponSearchResDTOV1;
 import com.qring.coupon.application.v1.service.CouponServiceV1;
-import com.qring.coupon.domain.model.CouponEntity;
 import com.qring.coupon.infrastructure.docs.CouponControllerSwagger;
 import com.qring.coupon.presentation.v1.req.PostCouponReqDTOV1;
 import com.qring.coupon.presentation.v1.req.PutCouponReqDTOV1;
@@ -18,8 +17,6 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDateTime;
 
 @RestController
 @RequiredArgsConstructor
@@ -42,23 +39,13 @@ public class CouponControllerV1 implements CouponControllerSwagger {
     }
 
     @PostMapping("/{id}/issue")
-    public ResponseEntity<ResDTO<CouponPostByIdResDTOV1>> postBy(@RequestHeader("X-User-Id") Long userId,
+    public ResponseEntity<ResDTO<CouponPostByIdResDTOV1>> issueBy(@RequestHeader("X-Passport-Token") String passport,
                                                                  @PathVariable Long id) {
-        /*
-         * TODO :  더미데이터입니다.
-         */
-        CouponEntity dummyCouponEntity = CouponEntity.builder()
-                .name("쿠폰1")
-                .discount(1000)
-                .openAt(LocalDateTime.of(2024, 12, 31, 12, 0))
-                .expiredAt(LocalDateTime.of(2025, 1, 15, 12, 0))
-                .build();
-
         return new ResponseEntity<>(
                 ResDTO.<CouponPostByIdResDTOV1>builder()
                         .code(HttpStatus.CREATED.value())
                         .message("쿠폰 발급에 성공하였습니다.")
-                        .data(CouponPostByIdResDTOV1.of(dummyCouponEntity))
+                        .data(couponServiceV1.issueBy(passport, id))
                         .build(),
                 HttpStatus.CREATED
         );

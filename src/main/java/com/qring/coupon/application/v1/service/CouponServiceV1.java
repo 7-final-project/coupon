@@ -67,9 +67,6 @@ public class CouponServiceV1 {
         UserCouponEntity userCouponEntityForSave = UserCouponEntity.createUserCouponEntity(couponEntityForCheck, PassportUtil.getUserId(passport));
         userCouponRepository.save(userCouponEntityForSave);
 
-        couponEntityForCheck.remainQuantityForDecrease();
-        couponRepository.save(couponEntityForCheck);
-
         return CouponPostByIdResDTOV1.of(couponEntityForCheck);
     }
 

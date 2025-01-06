@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -52,16 +53,16 @@ public class CouponServiceV1 {
 
         CouponEntity couponEntityForCheck = getCouponEntityById(id);
 
-        if (!couponEntityForCheck.getIssuanceStatus().getStatus().equals("개시")) {
-            throw new BadRequestException("해당 쿠폰은 발급이 불가능합니다.");
-        }
-
         if (couponEntityForCheck.getRemainQuantity() <= 0) {
             throw new BadRequestException("쿠폰이 매진되었습니다.");
         }
 
         if (userCouponRepository.existsByUserIdAndCouponEntity(PassportUtil.getUserId(passport), couponEntityForCheck)) {
             throw new DuplicateResourceException("이미 보유하고 있는 쿠폰입니다.");
+        }
+
+        if (Objects.equals(couponEntityForCheck.getIssuanceStatus().getStatus(), "개시")) {
+            throw new BadRequestException("해당 쿠폰은 발급이 불가능합니다.");
         }
 
         UserCouponEntity userCouponEntityForSave = UserCouponEntity.createUserCouponEntity(couponEntityForCheck, PassportUtil.getUserId(passport));

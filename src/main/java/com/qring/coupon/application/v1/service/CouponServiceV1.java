@@ -95,7 +95,7 @@ public class CouponServiceV1 {
 
         int remainingQuantity = getRemainingQuantity(dto.getCoupon().getTotalQuantity(), couponEntityForModification);
 
-        String issuanceStatus = getIssuanceStatus(dto.getCoupon().getIssuanceStatus(), remainingQuantity);
+        String issuanceStatus = getIssuanceStatusByRemainingQuantity(dto.getCoupon().getIssuanceStatus(), remainingQuantity);
 
         validateCouponDateRange(dto.getCoupon().getOpenAt(), dto.getCoupon().getExpiredAt());
 
@@ -181,7 +181,7 @@ public class CouponServiceV1 {
 
     // -----
     // NOTE : 쿠폰 발행 가능 상태 반환
-    private String getIssuanceStatus(String issuanceStatus, int remainingQuantity) {
+    private String getIssuanceStatusByRemainingQuantity(String issuanceStatus, int remainingQuantity) {
         return remainingQuantity == 0 ? IssuanceStatus.Status.CLOSED : issuanceStatus;
     }
 

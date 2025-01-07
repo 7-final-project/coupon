@@ -103,7 +103,7 @@ public class CouponEntity {
                 .build();
     }
 
-    public void remainQuantityForDecrease() {
+    public void decreaseRemainingQuantity() {
         if(this.remainQuantity <= 0){
             throw new BadRequestException("재고 수량이 부족합니다.");
         }

@@ -31,7 +31,7 @@ public class UserCouponEntity {
     }
 
     public static UserCouponEntity createUserCouponEntity(CouponEntity couponEntity, Long userId) {
-        couponEntity.remainQuantityForDecrease();
+        couponEntity.decreaseRemainingQuantity();
         return UserCouponEntity.builder()
                 .couponEntity(couponEntity)
                 .userId(userId)

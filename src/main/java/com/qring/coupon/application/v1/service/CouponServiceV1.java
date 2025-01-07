@@ -142,7 +142,7 @@ public class CouponServiceV1 {
     // -----
     // NOTE : 관리자 권한 검증
     private void validateUserRole(String passport) {
-        if (!PassportUtil.getRole(passport).equals("관리자")) {
+        if (!Objects.equals(PassportUtil.getRole(passport), "관리자")) {
             throw new UnauthorizedAccessException("쿠폰 생성 권한이 없습니다.");
         }
     }

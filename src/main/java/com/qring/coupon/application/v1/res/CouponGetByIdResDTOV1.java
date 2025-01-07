@@ -1,7 +1,6 @@
 package com.qring.coupon.application.v1.res;
 
 import com.qring.coupon.domain.model.CouponEntity;
-import com.qring.coupon.domain.model.constraint.CouponStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -33,7 +32,7 @@ public class CouponGetByIdResDTOV1 {
         private String name;
         private int discount;
         private int totalQuantity;
-        private int remainQuantity;
+        private int remainingQuantity;
         private LocalDateTime openAt;
         private LocalDateTime expiredAt;
         private String couponStatus;
@@ -44,7 +43,7 @@ public class CouponGetByIdResDTOV1 {
                     .name(couponEntity.getName())
                     .discount(couponEntity.getDiscount())
                     .totalQuantity(couponEntity.getTotalQuantity())
-                    .remainQuantity(couponEntity.getRemainQuantity())
+                    .remainingQuantity(couponEntity.getRemainingQuantity())
                     .openAt(couponEntity.getOpenAt())
                     .expiredAt(couponEntity.getExpiredAt())
                     .couponStatus(couponEntity.getCouponStatus().getStatus())

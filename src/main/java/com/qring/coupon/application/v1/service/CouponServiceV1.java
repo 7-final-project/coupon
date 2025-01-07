@@ -53,7 +53,7 @@ public class CouponServiceV1 {
 
         CouponEntity couponEntityForCheck = getCouponEntityById(id);
 
-        if (couponEntityForCheck.getRemainQuantity() <= 0) {
+        if (couponEntityForCheck.getRemainingQuantity() <= 0) {
             throw new BadRequestException("쿠폰이 매진되었습니다.");
         }
 
@@ -93,9 +93,9 @@ public class CouponServiceV1 {
 
         validateCouponNameDuplicate(id, dto.getCoupon().getName());
 
-        int remainQuantity = getRemainQuantity(dto.getCoupon().getTotalQuantity(), couponEntityForModification);
+        int remainingQuantity = getRemainingQuantity(dto.getCoupon().getTotalQuantity(), couponEntityForModification);
 
-        String issuanceStatus = getIssuanceStatus(dto.getCoupon().getIssuanceStatus(), remainQuantity);
+        String issuanceStatus = getIssuanceStatus(dto.getCoupon().getIssuanceStatus(), remainingQuantity);
 
         validateCouponDateRange(dto.getCoupon().getOpenAt(), dto.getCoupon().getExpiredAt());
 
@@ -103,7 +103,7 @@ public class CouponServiceV1 {
                 dto.getCoupon().getName(),
                 dto.getCoupon().getDiscount(),
                 dto.getCoupon().getTotalQuantity(),
-                remainQuantity,
+                remainingQuantity,
                 dto.getCoupon().getOpenAt(),
                 dto.getCoupon().getExpiredAt(),
                 dto.getCoupon().getCouponStatus(),
@@ -165,24 +165,24 @@ public class CouponServiceV1 {
 
     // -----
     // NOTE : 쿠폰 잔여 개수 반환
-    private int getRemainQuantity(int reqTotalQuantity, CouponEntity couponEntityForModification) {
+    private int getRemainingQuantity(int reqTotalQuantity, CouponEntity couponEntityForModification) {
         int totalQuantity = couponEntityForModification.getTotalQuantity();
-        int remainQuantity = couponEntityForModification.getRemainQuantity();
+        int remainingQuantity = couponEntityForModification.getRemainingQuantity();
 
         if (totalQuantity != reqTotalQuantity) {
             int count = reqTotalQuantity - totalQuantity;
-            remainQuantity += count;
-            if (remainQuantity < 0) {
+            remainingQuantity += count;
+            if (remainingQuantity < 0) {
                 throw new BadRequestException("쿠폰 잔여 개수가 부족합니다.");
             }
         }
-        return remainQuantity;
+        return remainingQuantity;
     }
 
     // -----
     // NOTE : 쿠폰 발행 가능 상태 반환
-    private String getIssuanceStatus(String issuanceStatus, int remainQuantity) {
-        return remainQuantity == 0 ? IssuanceStatus.Status.CLOSED : issuanceStatus;
+    private String getIssuanceStatus(String issuanceStatus, int remainingQuantity) {
+        return remainingQuantity == 0 ? IssuanceStatus.Status.CLOSED : issuanceStatus;
     }
 
     // -----

@@ -30,4 +30,11 @@ public class UserCouponEntity {
         this.couponEntity = couponEntity;
     }
 
+    public static UserCouponEntity createUserCouponEntity(CouponEntity couponEntity, Long userId) {
+        couponEntity.decreaseRemainingQuantity();
+        return UserCouponEntity.builder()
+                .couponEntity(couponEntity)
+                .userId(userId)
+                .build();
+    }
 }

@@ -5,27 +5,31 @@ import com.qring.coupon.application.global.exception.DuplicateResourceException;
 import com.qring.coupon.application.global.exception.EntityNotFoundException;
 import com.qring.coupon.application.global.exception.UnauthorizedAccessException;
 import com.qring.coupon.application.v1.res.CouponGetByIdResDTOV1;
+import com.qring.coupon.application.v1.res.CouponPostByIdResDTOV1;
 import com.qring.coupon.application.v1.res.CouponPostResDTOV1;
 import com.qring.coupon.application.v1.res.CouponSearchResDTOV1;
 import com.qring.coupon.domain.model.CouponEntity;
+import com.qring.coupon.domain.model.UserCouponEntity;
 import com.qring.coupon.domain.model.constraint.IssuanceStatus;
 import com.qring.coupon.domain.repository.CouponRepository;
+import com.qring.coupon.domain.repository.UserCouponRepository;
 import com.qring.coupon.infrastructure.util.PassportUtil;
 import com.qring.coupon.presentation.v1.req.PostCouponReqDTOV1;
 import com.qring.coupon.presentation.v1.req.PutCouponReqDTOV1;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.builder.Builder;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
 public class CouponServiceV1 {
 
     private final CouponRepository couponRepository;
+    private final UserCouponRepository userCouponRepository;
 
     @Transactional
     public CouponPostResDTOV1 postBy(String passport, PostCouponReqDTOV1 dto) {
@@ -42,6 +46,29 @@ public class CouponServiceV1 {
         );
 
         return CouponPostResDTOV1.of(couponRepository.save(couponEntityForSave));
+    }
+
+    @Transactional
+    public CouponPostByIdResDTOV1 issueBy(String passport, Long id) {
+
+        CouponEntity couponEntityForCheck = getCouponEntityById(id);
+
+        if (couponEntityForCheck.getRemainingQuantity() <= 0) {
+            throw new BadRequestException("쿠폰이 매진되었습니다.");
+        }
+
+        if (userCouponRepository.existsByUserIdAndCouponEntity(PassportUtil.getUserId(passport), couponEntityForCheck)) {
+            throw new DuplicateResourceException("이미 보유하고 있는 쿠폰입니다.");
+        }
+
+        if (Objects.equals(couponEntityForCheck.getIssuanceStatus().getStatus(), "개시")) {
+            throw new BadRequestException("해당 쿠폰은 발급이 불가능합니다.");
+        }
+
+        UserCouponEntity userCouponEntityForSave = UserCouponEntity.createUserCouponEntity(couponEntityForCheck, PassportUtil.getUserId(passport));
+        userCouponRepository.save(userCouponEntityForSave);
+
+        return CouponPostByIdResDTOV1.of(couponEntityForCheck);
     }
 
     @Transactional(readOnly = true)
@@ -62,13 +89,13 @@ public class CouponServiceV1 {
 
         CouponEntity couponEntityForModification = getCouponEntityById(id);
 
-        validateMasterRole(passport);
+        validateUserRole(passport);
 
         validateCouponNameDuplicate(id, dto.getCoupon().getName());
 
-        int remainQuantity = getRemainQuantity(dto.getCoupon().getTotalQuantity(), couponEntityForModification);
+        int remainingQuantity = getRemainingQuantity(dto.getCoupon().getTotalQuantity(), couponEntityForModification);
 
-        String issuanceStatus = getIssuanceStatus(dto.getCoupon().getIssuanceStatus(), remainQuantity);
+        String issuanceStatus = getIssuanceStatusByRemainingQuantity(dto.getCoupon().getIssuanceStatus(), remainingQuantity);
 
         validateCouponDateRange(dto.getCoupon().getOpenAt(), dto.getCoupon().getExpiredAt());
 
@@ -76,7 +103,7 @@ public class CouponServiceV1 {
                 dto.getCoupon().getName(),
                 dto.getCoupon().getDiscount(),
                 dto.getCoupon().getTotalQuantity(),
-                remainQuantity,
+                remainingQuantity,
                 dto.getCoupon().getOpenAt(),
                 dto.getCoupon().getExpiredAt(),
                 dto.getCoupon().getCouponStatus(),
@@ -97,7 +124,7 @@ public class CouponServiceV1 {
     // -----
     // NOTE : 쿠폰 생성 검증 프로세스
     private void validateCouponCreationProcess(String passport, PostCouponReqDTOV1 dto) {
-        validateMasterRole(passport);
+        validateUserRole(passport);
 
         validateCouponNameDuplicate(dto.getCoupon().getName());
 
@@ -114,8 +141,8 @@ public class CouponServiceV1 {
 
     // -----
     // NOTE : 관리자 권한 검증
-    private void validateMasterRole(String passport) {
-        if (!PassportUtil.getRole(passport).equals("관리자")) {
+    private void validateUserRole(String passport) {
+        if (!Objects.equals(PassportUtil.getRole(passport), "관리자")) {
             throw new UnauthorizedAccessException("쿠폰 생성 권한이 없습니다.");
         }
     }
@@ -138,24 +165,24 @@ public class CouponServiceV1 {
 
     // -----
     // NOTE : 쿠폰 잔여 개수 반환
-    private int getRemainQuantity(int reqTotalQuantity, CouponEntity couponEntityForModification) {
+    private int getRemainingQuantity(int reqTotalQuantity, CouponEntity couponEntityForModification) {
         int totalQuantity = couponEntityForModification.getTotalQuantity();
-        int remainQuantity = couponEntityForModification.getRemainQuantity();
+        int remainingQuantity = couponEntityForModification.getRemainingQuantity();
 
         if (totalQuantity != reqTotalQuantity) {
             int count = reqTotalQuantity - totalQuantity;
-            remainQuantity += count;
-            if (remainQuantity < 0) {
+            remainingQuantity += count;
+            if (remainingQuantity < 0) {
                 throw new BadRequestException("쿠폰 잔여 개수가 부족합니다.");
             }
         }
-        return remainQuantity;
+        return remainingQuantity;
     }
 
     // -----
     // NOTE : 쿠폰 발행 가능 상태 반환
-    private String getIssuanceStatus(String issuanceStatus, int remainQuantity) {
-        return remainQuantity == 0 ? IssuanceStatus.Status.CLOSED : issuanceStatus;
+    private String getIssuanceStatusByRemainingQuantity(String issuanceStatus, int remainingQuantity) {
+        return remainingQuantity == 0 ? IssuanceStatus.Status.CLOSED : issuanceStatus;
     }
 
     // -----

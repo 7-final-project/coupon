@@ -32,7 +32,7 @@ public class CouponPostResDTOV1 {
         private String name;
         private int discount;
         private int totalQuantity;
-        private int remainQuantity;
+        private int remainingQuantity;
         private LocalDateTime openAt;
         private LocalDateTime expiredAt;
         private String couponStatus;
@@ -43,7 +43,7 @@ public class CouponPostResDTOV1 {
                     .name(couponEntity.getName())
                     .discount(couponEntity.getDiscount())
                     .totalQuantity(couponEntity.getTotalQuantity())
-                    .remainQuantity(couponEntity.getRemainQuantity())
+                    .remainingQuantity(couponEntity.getRemainingQuantity())
                     .openAt(couponEntity.getOpenAt())
                     .expiredAt(couponEntity.getExpiredAt())
                     .couponStatus(couponEntity.getCouponStatus().getStatus())

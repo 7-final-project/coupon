@@ -25,7 +25,7 @@ public class CouponQueryRepository {
     private final JPAQueryFactory queryFactory;
 
     public Page<CouponEntity> couponEntityPageByDeletedAtIsNullWithConditions(Pageable pageable, Long userId, String name, String couponStatus, String issuanceStatus, String sort) {
-        List<CouponEntity> results = queryFactory
+        List<CouponEntity> resultList = queryFactory
                 .selectFrom(couponEntity)
                 .where(
                         couponEntity.deletedAt.isNull(),
@@ -52,7 +52,7 @@ public class CouponQueryRepository {
                         issuanceStatusEq(issuanceStatus)
                 );
 
-        return PageableExecutionUtils.getPage(results, pageable, countQuery::fetchOne);
+        return PageableExecutionUtils.getPage(resultList, pageable, countQuery::fetchOne);
     }
 
     private BooleanExpression userIdEq(Long userId) {

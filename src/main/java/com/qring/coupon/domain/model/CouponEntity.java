@@ -1,5 +1,6 @@
 package com.qring.coupon.domain.model;
 
+import com.qring.coupon.application.global.exception.BadRequestException;
 import com.qring.coupon.domain.model.constraint.CouponStatus;
 import com.qring.coupon.domain.model.constraint.IssuanceStatus;
 import io.hypersistence.utils.hibernate.id.Tsid;
@@ -35,7 +36,7 @@ public class CouponEntity {
     private int totalQuantity;
 
     @Column(name = "remain_quantity", nullable = false)
-    private int remainQuantity;
+    private int remainingQuantity;
 
     @Column(name = "open_at", nullable = false)
     private LocalDateTime openAt;
@@ -75,11 +76,11 @@ public class CouponEntity {
     private String deletedBy;
 
     @Builder
-    public CouponEntity(String name, int discount, int totalQuantity, int remainQuantity, LocalDateTime openAt, LocalDateTime expiredAt, CouponStatus couponStatus, IssuanceStatus issuanceStatus, String username) {
+    public CouponEntity(String name, int discount, int totalQuantity, int remainingQuantity, LocalDateTime openAt, LocalDateTime expiredAt, CouponStatus couponStatus, IssuanceStatus issuanceStatus, String username) {
         this.name = name;
         this.discount = discount;
         this.totalQuantity = totalQuantity;
-        this.remainQuantity = totalQuantity;
+        this.remainingQuantity = totalQuantity;
         this.openAt = openAt;
         this.expiredAt = expiredAt;
         this.couponStatus = couponStatus;
@@ -93,7 +94,7 @@ public class CouponEntity {
                 .name(name)
                 .discount(discount)
                 .totalQuantity(totalQuantity)
-                .remainQuantity(totalQuantity)
+                .remainingQuantity(totalQuantity)
                 .openAt(openAt)
                 .expiredAt(expiredAt)
                 .couponStatus(CouponStatus.INACTIVE)
@@ -102,11 +103,19 @@ public class CouponEntity {
                 .build();
     }
 
-    public void modifyCouponEntity(String name, int discount, int totalQuantity, int remainQuantity, LocalDateTime openAt, LocalDateTime expiredAt, String couponStatus, String issuanceStatus, String username) {
+    public void decreaseRemainingQuantity() {
+        if(this.remainingQuantity <= 0){
+            throw new BadRequestException("재고 수량이 부족합니다.");
+        }
+
+        this.remainingQuantity -= 1;
+    }
+
+    public void modifyCouponEntity(String name, int discount, int totalQuantity, int remainingQuantity, LocalDateTime openAt, LocalDateTime expiredAt, String couponStatus, String issuanceStatus, String username) {
         this.name = name;
         this.discount = discount;
         this.totalQuantity = totalQuantity;
-        this.remainQuantity = remainQuantity;
+        this.remainingQuantity = remainingQuantity;
         this.openAt = openAt;
         this.expiredAt = expiredAt;
         this.couponStatus = CouponStatus.fromString(couponStatus);

@@ -93,7 +93,7 @@ public class CouponServiceV1 {
 
         validateCouponNameDuplicate(id, dto.getCoupon().getName());
 
-        int remainingQuantity = getRemainingQuantity(dto.getCoupon().getTotalQuantity(), couponEntityForModification);
+        int remainingQuantity = calculateRemainingQuantity(dto.getCoupon().getTotalQuantity(), couponEntityForModification);
 
         String issuanceStatus = getIssuanceStatusByRemainingQuantity(dto.getCoupon().getIssuanceStatus(), remainingQuantity);
 
@@ -165,7 +165,7 @@ public class CouponServiceV1 {
 
     // -----
     // NOTE : 쿠폰 잔여 개수 반환
-    private int getRemainingQuantity(int reqTotalQuantity, CouponEntity couponEntityForModification) {
+    private int calculateRemainingQuantity(int reqTotalQuantity, CouponEntity couponEntityForModification) {
         int totalQuantity = couponEntityForModification.getTotalQuantity();
         int remainingQuantity = couponEntityForModification.getRemainingQuantity();
 

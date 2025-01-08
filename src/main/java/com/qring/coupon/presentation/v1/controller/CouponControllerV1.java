@@ -1,10 +1,7 @@
 package com.qring.coupon.presentation.v1.controller;
 
 import com.qring.coupon.application.global.dto.ResDTO;
-import com.qring.coupon.application.v1.res.CouponGetByIdResDTOV1;
-import com.qring.coupon.application.v1.res.CouponPostByIdResDTOV1;
-import com.qring.coupon.application.v1.res.CouponPostResDTOV1;
-import com.qring.coupon.application.v1.res.CouponSearchResDTOV1;
+import com.qring.coupon.application.v1.res.*;
 import com.qring.coupon.application.v1.service.CouponServiceV1;
 import com.qring.coupon.infrastructure.docs.CouponControllerSwagger;
 import com.qring.coupon.presentation.v1.req.PostCouponReqDTOV1;
@@ -17,6 +14,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestClient;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 public class CouponControllerV1 implements CouponControllerSwagger {
 
     private final CouponServiceV1 couponServiceV1;
+    private final RestClient.Builder builder;
 
     @PostMapping
     public ResponseEntity<ResDTO<CouponPostResDTOV1>> postBy(@RequestHeader("X-Passport-Token") String passport,
@@ -40,7 +39,7 @@ public class CouponControllerV1 implements CouponControllerSwagger {
 
     @PostMapping("/{id}/issue")
     public ResponseEntity<ResDTO<CouponPostByIdResDTOV1>> issueBy(@RequestHeader("X-Passport-Token") String passport,
-                                                                 @PathVariable Long id) {
+                                                                  @PathVariable Long id) {
         return new ResponseEntity<>(
                 ResDTO.<CouponPostByIdResDTOV1>builder()
                         .code(HttpStatus.CREATED.value())
@@ -63,6 +62,18 @@ public class CouponControllerV1 implements CouponControllerSwagger {
                         .code(HttpStatus.OK.value())
                         .message("쿠폰 검색에 성공하였습니다.")
                         .data(couponServiceV1.searchBy(pageable, userId, name, couponStatus, issuanceStatus, sort))
+                        .build(),
+                HttpStatus.OK
+        );
+    }
+
+    @GetMapping("/user-coupons")
+    public ResponseEntity<ResDTO<CouponTableGetByUserIdResDTOV1>> getBy(@RequestHeader("X-Passport-Token") String passport) {
+        return new ResponseEntity<>(
+                ResDTO.<CouponTableGetByUserIdResDTOV1>builder()
+                        .code(HttpStatus.OK.value())
+                        .message("사용자 쿠폰 조회에 성공하였습니다.")
+                        .data(couponServiceV1.getBy(passport))
                         .build(),
                 HttpStatus.OK
         );

@@ -57,6 +57,7 @@ public class UserCouponEntity {
     public UserCouponEntity(Long userId, CouponEntity couponEntity, String username) {
         this.userId = userId;
         this.couponEntity = couponEntity;
+        this.useStatus = UseStatus.UNUSED;
         this.createdBy = username;
         this.modifiedBy = username;
     }

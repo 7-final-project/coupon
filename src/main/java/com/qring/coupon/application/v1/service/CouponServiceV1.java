@@ -4,10 +4,7 @@ import com.qring.coupon.application.global.exception.BadRequestException;
 import com.qring.coupon.application.global.exception.DuplicateResourceException;
 import com.qring.coupon.application.global.exception.EntityNotFoundException;
 import com.qring.coupon.application.global.exception.UnauthorizedAccessException;
-import com.qring.coupon.application.v1.res.CouponGetByIdResDTOV1;
-import com.qring.coupon.application.v1.res.CouponPostByIdResDTOV1;
-import com.qring.coupon.application.v1.res.CouponPostResDTOV1;
-import com.qring.coupon.application.v1.res.CouponSearchResDTOV1;
+import com.qring.coupon.application.v1.res.*;
 import com.qring.coupon.domain.model.CouponEntity;
 import com.qring.coupon.domain.model.UserCouponEntity;
 import com.qring.coupon.domain.model.constraint.IssuanceStatus;
@@ -23,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -61,11 +59,11 @@ public class CouponServiceV1 {
             throw new DuplicateResourceException("이미 보유하고 있는 쿠폰입니다.");
         }
 
-        if (Objects.equals(couponEntityForCheck.getIssuanceStatus().getStatus(), "개시")) {
+        if (!Objects.equals(couponEntityForCheck.getIssuanceStatus().getStatus(), "개시")) {
             throw new BadRequestException("해당 쿠폰은 발급이 불가능합니다.");
         }
 
-        UserCouponEntity userCouponEntityForSave = UserCouponEntity.createUserCouponEntity(couponEntityForCheck, PassportUtil.getUserId(passport));
+        UserCouponEntity userCouponEntityForSave = UserCouponEntity.createUserCouponEntity(couponEntityForCheck, PassportUtil.getUserId(passport), PassportUtil.getUsername(passport));
         userCouponRepository.save(userCouponEntityForSave);
 
         return CouponPostByIdResDTOV1.of(couponEntityForCheck);
@@ -74,6 +72,14 @@ public class CouponServiceV1 {
     @Transactional(readOnly = true)
     public CouponSearchResDTOV1 searchBy(Pageable pageable, Long userId, String name, String couponStatus, String issuanceStatus, String sort) {
         return CouponSearchResDTOV1.of(couponRepository.couponEntityPageByDeletedAtIsNullWithConditions(pageable, userId, name, couponStatus, issuanceStatus, sort));
+    }
+
+    @Transactional(readOnly = true)
+    public CouponTableGetByUserIdResDTOV1 getBy(String passport) {
+
+        Set<UserCouponEntity> findUserCouponSetForMapping = userCouponRepository.findUserCouponEntitySetFetchJoinCouponByUserIdAndDeletedAtIsNull(PassportUtil.getUserId(passport));
+
+        return CouponTableGetByUserIdResDTOV1.of(findUserCouponSetForMapping);
     }
 
     @Transactional(readOnly = true)
@@ -93,7 +99,7 @@ public class CouponServiceV1 {
 
         validateCouponNameDuplicate(id, dto.getCoupon().getName());
 
-        int remainingQuantity = getRemainingQuantity(dto.getCoupon().getTotalQuantity(), couponEntityForModification);
+        int remainingQuantity = calculateRemainingQuantity(dto.getCoupon().getTotalQuantity(), couponEntityForModification);
 
         String issuanceStatus = getIssuanceStatusByRemainingQuantity(dto.getCoupon().getIssuanceStatus(), remainingQuantity);
 
@@ -165,7 +171,7 @@ public class CouponServiceV1 {
 
     // -----
     // NOTE : 쿠폰 잔여 개수 반환
-    private int getRemainingQuantity(int reqTotalQuantity, CouponEntity couponEntityForModification) {
+    private int calculateRemainingQuantity(int reqTotalQuantity, CouponEntity couponEntityForModification) {
         int totalQuantity = couponEntityForModification.getTotalQuantity();
         int remainingQuantity = couponEntityForModification.getRemainingQuantity();
 

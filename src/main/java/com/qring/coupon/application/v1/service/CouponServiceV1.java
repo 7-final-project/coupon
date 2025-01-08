@@ -61,7 +61,7 @@ public class CouponServiceV1 {
             throw new DuplicateResourceException("이미 보유하고 있는 쿠폰입니다.");
         }
 
-        if (Objects.equals(couponEntityForCheck.getIssuanceStatus().getStatus(), "개시")) {
+        if (!Objects.equals(couponEntityForCheck.getIssuanceStatus().getStatus(), "개시")) {
             throw new BadRequestException("해당 쿠폰은 발급이 불가능합니다.");
         }
 

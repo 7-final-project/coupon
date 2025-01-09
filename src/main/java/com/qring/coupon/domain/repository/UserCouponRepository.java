@@ -11,6 +11,10 @@ public interface UserCouponRepository {
 
     Set<UserCouponEntity> findUserCouponEntitySetFetchJoinCouponByUserIdAndDeletedAtIsNull(Long userId);
 
+    void deleteAll();
+
+    Long countByCouponEntityId(Long id);
+
     UserCouponEntity save(UserCouponEntity userCouponEntity);
 
 }

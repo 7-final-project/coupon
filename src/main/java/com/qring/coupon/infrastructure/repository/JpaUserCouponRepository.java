@@ -17,4 +17,7 @@ public interface JpaUserCouponRepository extends JpaRepository<UserCouponEntity,
             "where uc.userId = :userId " +
             "and uc.deletedAt is null ")
     Set<UserCouponEntity> findUserCouponEntitySetFetchJoinCouponByUserIdAndDeletedAtIsNull(@Param("userId") Long userId);
+
+    Long countByCouponEntityId(Long id);
+
 }

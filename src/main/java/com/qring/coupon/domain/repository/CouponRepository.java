@@ -16,5 +16,7 @@ public interface CouponRepository {
 
     Page<CouponEntity> couponEntityPageByDeletedAtIsNullWithConditions(Pageable pageable, Long userId, String name, String couponStatus, String issuanceStatus, String sort);
 
+    void deleteAll();
+
     CouponEntity save(CouponEntity couponEntity);
 }

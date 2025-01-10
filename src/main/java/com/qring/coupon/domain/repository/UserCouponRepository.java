@@ -14,4 +14,6 @@ public interface UserCouponRepository {
     void deleteAll();
 
     UserCouponEntity save(UserCouponEntity userCouponEntity);
+
+    Long countByCouponEntityId(Long couponId);
 }

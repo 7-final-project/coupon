@@ -6,6 +6,7 @@ import com.qring.coupon.domain.repository.UserCouponRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Set;
 
 @Repository
@@ -22,6 +23,11 @@ public class UserCouponRepositoryImpl implements UserCouponRepository {
     @Override
     public Set<UserCouponEntity> findUserCouponEntitySetFetchJoinCouponByUserIdAndDeletedAtIsNull(Long userId) {
         return jpaUserCouponRepository.findUserCouponEntitySetFetchJoinCouponByUserIdAndDeletedAtIsNull(userId);
+    }
+
+    @Override
+    public Long countByCouponEntityId(Long couponId) {
+        return jpaUserCouponRepository.countByCouponEntityId(couponId);
     }
 
     @Override

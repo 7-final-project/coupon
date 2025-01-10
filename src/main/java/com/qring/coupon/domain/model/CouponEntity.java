@@ -111,6 +111,11 @@ public class CouponEntity {
         this.remainingQuantity -= 1;
     }
 
+    public void modifyCouponStatus(IssuanceStatus issuanceStatus, CouponStatus couponStatus) {
+        this.issuanceStatus = issuanceStatus;
+        this.couponStatus = couponStatus;
+    }
+
     public void modifyCouponEntity(String name, int discount, int totalQuantity, int remainingQuantity, LocalDateTime openAt, LocalDateTime expiredAt, String couponStatus, String issuanceStatus, String username) {
         this.name = name;
         this.discount = discount;

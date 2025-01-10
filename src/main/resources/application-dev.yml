@@ -4,6 +4,13 @@ spring:
     username: ${DB_USER}
     password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 40       # 최대 연결 수
+      minimum-idle: 5             # 최소 유휴 연결 수
+      idle-timeout: 30000         # 유휴 연결 유지 시간 (ms)
+      max-lifetime: 1800000       # 커넥션 최대 수명 (ms)
+      connection-timeout: 30000   # 연결 대기 시간 (ms)
+      pool-name: HikariPool
 
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect

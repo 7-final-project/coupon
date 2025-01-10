@@ -37,6 +37,11 @@ public class CouponRepositoryImpl implements CouponRepository {
     }
 
     @Override
+    public void deleteAll(){
+        jpaCouponRepository.deleteAll();
+    }
+
+    @Override
     public CouponEntity save(CouponEntity couponEntity) {
         return jpaCouponRepository.save(couponEntity);
     }

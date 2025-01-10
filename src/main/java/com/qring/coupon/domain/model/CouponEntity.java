@@ -52,6 +52,9 @@ public class CouponEntity {
     @Column(name = "issuance_status", nullable = false)
     private IssuanceStatus issuanceStatus;
 
+    @Version
+    private Long version;
+
     @OneToMany(mappedBy = "couponEntity", cascade = CascadeType.REMOVE)
     List<UserCouponEntity> userCouponEntityList = new ArrayList<>();
 
@@ -76,7 +79,7 @@ public class CouponEntity {
     private String deletedBy;
 
     @Builder
-    public CouponEntity(String name, int discount, int totalQuantity, int remainingQuantity, LocalDateTime openAt, LocalDateTime expiredAt, CouponStatus couponStatus, IssuanceStatus issuanceStatus, String username) {
+    public CouponEntity(String name, int discount, int totalQuantity, LocalDateTime openAt, LocalDateTime expiredAt, CouponStatus couponStatus, IssuanceStatus issuanceStatus, String username) {
         this.name = name;
         this.discount = discount;
         this.totalQuantity = totalQuantity;
@@ -94,17 +97,16 @@ public class CouponEntity {
                 .name(name)
                 .discount(discount)
                 .totalQuantity(totalQuantity)
-                .remainingQuantity(totalQuantity)
                 .openAt(openAt)
                 .expiredAt(expiredAt)
-                .couponStatus(CouponStatus.INACTIVE)
-                .issuanceStatus(IssuanceStatus.CLOSED)
+                .couponStatus(CouponStatus.ACTIVE)
+                .issuanceStatus(IssuanceStatus.OPEN)
                 .username(username)
                 .build();
     }
 
     public void decreaseRemainingQuantity() {
-        if(this.remainingQuantity <= 0){
+        if (this.remainingQuantity <= 0) {
             throw new BadRequestException("재고 수량이 부족합니다.");
         }
 
@@ -123,7 +125,7 @@ public class CouponEntity {
         this.modifiedBy = username;
     }
 
-    public void deletedCouponEntity(String username){
+    public void deletedCouponEntity(String username) {
         this.deletedAt = LocalDateTime.now();
         this.deletedBy = username;
     }

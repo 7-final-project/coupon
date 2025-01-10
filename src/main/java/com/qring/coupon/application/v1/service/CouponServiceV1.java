@@ -47,7 +47,7 @@ public class CouponServiceV1 {
     }
 
     @Transactional
-    public CouponPostByIdResDTOV1 issueBy(String passport, Long id) {
+    public CouponPostByIdResDTOV1 issueBy(Long userId, Long id, String username) {
 
         CouponEntity couponEntityForCheck = getCouponEntityById(id);
 
@@ -55,7 +55,7 @@ public class CouponServiceV1 {
             throw new BadRequestException("쿠폰이 매진되었습니다.");
         }
 
-        if (userCouponRepository.existsByUserIdAndCouponEntity(PassportUtil.getUserId(passport), couponEntityForCheck)) {
+        if (userCouponRepository.existsByUserIdAndCouponEntity(userId, couponEntityForCheck)) {
             throw new DuplicateResourceException("이미 보유하고 있는 쿠폰입니다.");
         }
 
@@ -63,7 +63,7 @@ public class CouponServiceV1 {
             throw new BadRequestException("해당 쿠폰은 발급이 불가능합니다.");
         }
 
-        UserCouponEntity userCouponEntityForSave = UserCouponEntity.createUserCouponEntity(couponEntityForCheck, PassportUtil.getUserId(passport), PassportUtil.getUsername(passport));
+        UserCouponEntity userCouponEntityForSave = UserCouponEntity.createUserCouponEntity(couponEntityForCheck, userId, username);
         userCouponRepository.save(userCouponEntityForSave);
 
         return CouponPostByIdResDTOV1.of(couponEntityForCheck);

@@ -15,13 +15,13 @@ import java.util.Date;
 
 @Component
 @RequiredArgsConstructor
-public class IssuanceStatusSchedulerImpl implements IssuanceStatusScheduler {
+public class CouponSchedulerImpl implements CouponScheduler {
 
     private final TaskScheduler taskScheduler;
     private final TransactionTemplate transactionTemplate;
     private final CouponRepository couponRepository;
 
-    public void schedulerIssuanceStatusChange(CouponEntity couponEntity) {
+    public void scheduleIssuanceStatus(CouponEntity couponEntity) {
         // NOTE : 쿠폰 활성화 스케줄
         taskScheduler.schedule(() -> {
             openCouponById(couponEntity.getId());

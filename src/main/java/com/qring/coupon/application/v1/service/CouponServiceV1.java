@@ -10,7 +10,7 @@ import com.qring.coupon.domain.model.UserCouponEntity;
 import com.qring.coupon.domain.model.constraint.IssuanceStatus;
 import com.qring.coupon.domain.repository.CouponRepository;
 import com.qring.coupon.domain.repository.UserCouponRepository;
-import com.qring.coupon.infrastructure.scheduler.IssuanceStatusScheduler;
+import com.qring.coupon.infrastructure.scheduler.CouponScheduler;
 import com.qring.coupon.infrastructure.util.PassportUtil;
 import com.qring.coupon.presentation.v1.req.PostCouponReqDTOV1;
 import com.qring.coupon.presentation.v1.req.PutCouponReqDTOV1;
@@ -29,7 +29,7 @@ public class CouponServiceV1 {
 
     private final CouponRepository couponRepository;
     private final UserCouponRepository userCouponRepository;
-    private final IssuanceStatusScheduler issuanceStatusScheduler;
+    private final CouponScheduler couponScheduler;
 
     @Transactional
     public CouponPostResDTOV1 postBy(String passport, PostCouponReqDTOV1 dto) {
@@ -45,7 +45,7 @@ public class CouponServiceV1 {
                 PassportUtil.getUsername(passport)
         );
 
-        issuanceStatusScheduler.schedulerIssuanceStatusChange(couponEntityForSave);
+        couponScheduler.scheduleIssuanceStatus(couponEntityForSave);
 
         return CouponPostResDTOV1.of(couponRepository.save(couponEntityForSave));
     }
@@ -121,7 +121,7 @@ public class CouponServiceV1 {
                 PassportUtil.getUsername(passport)
         );
 
-        issuanceStatusScheduler.schedulerIssuanceStatusChange(couponEntityForModification);
+        couponScheduler.scheduleIssuanceStatus(couponEntityForModification);
     }
 
     @Transactional

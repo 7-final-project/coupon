@@ -14,14 +14,17 @@ import com.qring.coupon.infrastructure.util.PassportUtil;
 import com.qring.coupon.presentation.v1.req.PostCouponReqDTOV1;
 import com.qring.coupon.presentation.v1.req.PutCouponReqDTOV1;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Set;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class CouponServiceV1 {
@@ -46,8 +49,8 @@ public class CouponServiceV1 {
         return CouponPostResDTOV1.of(couponRepository.save(couponEntityForSave));
     }
 
-    @Transactional
-    public CouponPostByIdResDTOV1 issueBy(String passport, Long id) {
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public CouponPostByIdResDTOV1 issueBy(Long userId, Long id, String username) {
 
         CouponEntity couponEntityForCheck = getCouponEntityById(id);
 
@@ -55,7 +58,7 @@ public class CouponServiceV1 {
             throw new BadRequestException("쿠폰이 매진되었습니다.");
         }
 
-        if (userCouponRepository.existsByUserIdAndCouponEntity(PassportUtil.getUserId(passport), couponEntityForCheck)) {
+        if (userCouponRepository.existsByUserIdAndCouponEntity(userId, couponEntityForCheck)) {
             throw new DuplicateResourceException("이미 보유하고 있는 쿠폰입니다.");
         }
 
@@ -63,7 +66,7 @@ public class CouponServiceV1 {
             throw new BadRequestException("해당 쿠폰은 발급이 불가능합니다.");
         }
 
-        UserCouponEntity userCouponEntityForSave = UserCouponEntity.createUserCouponEntity(couponEntityForCheck, PassportUtil.getUserId(passport), PassportUtil.getUsername(passport));
+        UserCouponEntity userCouponEntityForSave = UserCouponEntity.createUserCouponEntity(couponEntityForCheck, userId, username);
         userCouponRepository.save(userCouponEntityForSave);
 
         return CouponPostByIdResDTOV1.of(couponEntityForCheck);

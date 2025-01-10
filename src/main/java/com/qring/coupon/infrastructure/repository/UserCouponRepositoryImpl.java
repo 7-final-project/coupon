@@ -25,6 +25,16 @@ public class UserCouponRepositoryImpl implements UserCouponRepository {
     }
 
     @Override
+    public void deleteAll(){
+        jpaUserCouponRepository.deleteAll();
+    }
+
+    @Override
+    public Long countByCouponEntityId(Long id){
+        return jpaUserCouponRepository.countByCouponEntityId(id);
+    }
+
+    @Override
     public UserCouponEntity save(UserCouponEntity userCouponEntity) {
         return jpaUserCouponRepository.save(userCouponEntity);
     }

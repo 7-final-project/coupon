@@ -98,7 +98,7 @@ public class CouponEntity {
                 .openAt(openAt)
                 .expiredAt(expiredAt)
                 .couponStatus(CouponStatus.INACTIVE)
-                .issuanceStatus(IssuanceStatus.CLOSED)
+                .issuanceStatus(IssuanceStatus.OPEN)
                 .username(username)
                 .build();
     }

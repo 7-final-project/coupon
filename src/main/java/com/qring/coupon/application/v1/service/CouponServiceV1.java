@@ -47,7 +47,7 @@ public class CouponServiceV1 {
     }
 
     @Transactional
-    public CouponPostByIdResDTOV1 issueBy(Long userId, Long id, String username) {
+    public CouponPostByIdResDTOV1 issueCouponByIdWithPessimisticLock(Long userId, Long id, String username) {
 
         CouponEntity couponEntityForCheck = getCouponEntityById(id);
 
@@ -140,8 +140,8 @@ public class CouponServiceV1 {
     // -----
     // NOTE : 쿠폰 존재 여부 검증
     private CouponEntity getCouponEntityById(Long id) {
-        return couponRepository.findByIdAndDeletedAtIsNull(id).orElseThrow(
-                () -> new EntityNotFoundException("존재하지 않는 쿠폰입니다.")
+        return couponRepository.findByIdAndDeletedAtIsNull(id)
+                .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 쿠폰입니다.")
         );
     }
 

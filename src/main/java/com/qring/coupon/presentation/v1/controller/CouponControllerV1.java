@@ -45,7 +45,7 @@ public class CouponControllerV1 implements CouponControllerSwagger {
                 ResDTO.<CouponPostByIdResDTOV1>builder()
                         .code(HttpStatus.CREATED.value())
                         .message("쿠폰 발급에 성공하였습니다.")
-                        .data(couponServiceV1.issueBy(PassportUtil.getUserId(passport), id, PassportUtil.getUsername(passport)))
+                        .data(couponServiceV1.issueCouponByIdWithPessimisticLock(PassportUtil.getUserId(passport), id, PassportUtil.getUsername(passport)))
                         .build(),
                 HttpStatus.CREATED
         );

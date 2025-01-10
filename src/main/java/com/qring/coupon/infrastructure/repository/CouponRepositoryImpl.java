@@ -18,7 +18,7 @@ public class CouponRepositoryImpl implements CouponRepository {
 
     @Override
     public Optional<CouponEntity> findByIdAndDeletedAtIsNull(Long id) {
-        return jpaCouponRepository.findById(id);
+        return jpaCouponRepository.findByIdAndDeletedAtIsNull(id);
     }
 
     @Override
@@ -39,5 +39,10 @@ public class CouponRepositoryImpl implements CouponRepository {
     @Override
     public CouponEntity save(CouponEntity couponEntity) {
         return jpaCouponRepository.save(couponEntity);
+    }
+
+    @Override
+    public void deleteAll() {
+        jpaCouponRepository.deleteAll();
     }
 }

@@ -4,6 +4,7 @@ import com.qring.coupon.application.global.dto.ResDTO;
 import com.qring.coupon.application.v1.res.*;
 import com.qring.coupon.application.v1.service.CouponServiceV1;
 import com.qring.coupon.infrastructure.docs.CouponControllerSwagger;
+import com.qring.coupon.infrastructure.util.PassportUtil;
 import com.qring.coupon.presentation.v1.req.PostCouponReqDTOV1;
 import com.qring.coupon.presentation.v1.req.PutCouponReqDTOV1;
 import jakarta.validation.Valid;
@@ -44,7 +45,7 @@ public class CouponControllerV1 implements CouponControllerSwagger {
                 ResDTO.<CouponPostByIdResDTOV1>builder()
                         .code(HttpStatus.CREATED.value())
                         .message("쿠폰 발급에 성공하였습니다.")
-                        .data(couponServiceV1.issueBy(passport, id))
+                        .data(couponServiceV1.issueBy(PassportUtil.getUserId(passport), id, PassportUtil.getUsername(passport)))
                         .build(),
                 HttpStatus.CREATED
         );

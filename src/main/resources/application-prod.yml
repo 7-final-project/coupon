@@ -1,16 +1,16 @@
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:19000/eureka/
+      defaultZone: http://q-ring:19000/eureka/
 
 server:
   port: 19010
 
 spring:
   datasource:
-    url: ${DB_DEV_URL}
-    username: ${DB_DEV_USER}
-    password: ${DB_DEV_PASSWORD}
+    url: ${DB_PROD_URL}
+    username: ${DB_PROD_USER}
+    password: ${DB_PROD_PASSWORD}
     driver-class-name: org.postgresql.Driver
 
   jpa:

@@ -65,7 +65,7 @@ public class CouponControllerV1 implements CouponControllerSwagger {
         );
     }
 
-    @GetMapping("/user-coupons")
+    @GetMapping("/my")
     public ResponseEntity<ResDTO<CouponTableGetByUserIdResDTOV1>> getBy(@RequestHeader("X-Passport-Token") String passport) {
         return new ResponseEntity<>(
                 ResDTO.<CouponTableGetByUserIdResDTOV1>builder()

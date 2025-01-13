@@ -14,7 +14,6 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestClient;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,7 +21,6 @@ import org.springframework.web.client.RestClient;
 public class CouponControllerV1 implements CouponControllerSwagger {
 
     private final CouponServiceV1 couponServiceV1;
-    private final RestClient.Builder builder;
 
     @PostMapping
     public ResponseEntity<ResDTO<CouponPostResDTOV1>> postBy(@RequestHeader("X-Passport-Token") String passport,
@@ -67,7 +65,7 @@ public class CouponControllerV1 implements CouponControllerSwagger {
         );
     }
 
-    @GetMapping("/user-coupons")
+    @GetMapping("/my")
     public ResponseEntity<ResDTO<CouponTableGetByUserIdResDTOV1>> getBy(@RequestHeader("X-Passport-Token") String passport) {
         return new ResponseEntity<>(
                 ResDTO.<CouponTableGetByUserIdResDTOV1>builder()

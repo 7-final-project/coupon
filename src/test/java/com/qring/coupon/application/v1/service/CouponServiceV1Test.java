@@ -58,6 +58,7 @@ class CouponServiceV1Test {
     @AfterEach
     void after() {
         userCouponRepository.deleteAll();
+        couponRepository.deleteAll();
     }
 
     @Test
@@ -72,7 +73,7 @@ class CouponServiceV1Test {
             int key = i;
             executorService.submit(() -> {
                 try {
-                    advisoryLockFacade.issueCouponWithLockById(users.get(key), couponId, "유저");
+                    advisoryLockFacade.issueCouponWithLockById1(users.get(key), couponId, "유저");
                     System.out.println("Thread " + threadNumber + " - 성공");
 
                 } catch (Exception e) {

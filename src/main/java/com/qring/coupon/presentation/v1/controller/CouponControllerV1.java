@@ -49,7 +49,7 @@ public class CouponControllerV1 implements CouponControllerSwagger {
                 ResDTO.<CouponPostByIdResDTOV1>builder()
                         .code(HttpStatus.CREATED.value())
                         .message("쿠폰 발급에 성공하였습니다.")
-                        .data(advisoryLockFacade.issueCouponWithLockById(id, userId, username))
+                        .data(advisoryLockFacade.issueCouponWithLockById1(id, userId, username))
                         .build(),
                 HttpStatus.CREATED
         );

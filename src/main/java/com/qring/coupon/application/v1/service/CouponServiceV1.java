@@ -49,7 +49,7 @@ public class CouponServiceV1 {
         return CouponPostResDTOV1.of(couponRepository.save(couponEntityForSave));
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional
     public CouponPostByIdResDTOV1 issueBy(Long userId, Long id, String username) {
 
         CouponEntity couponEntityForCheck = getCouponEntityById(id);

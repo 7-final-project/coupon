@@ -2,13 +2,10 @@ package com.qring.coupon.domain.repository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import javax.sql.DataSource;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 
 @Repository
@@ -16,58 +13,42 @@ import java.sql.SQLException;
 @Slf4j
 public class AdvisoryLockRepository {
 
-    private final DataSource dataSource;
+    private final JdbcTemplate jdbcTemplate;
 
-    public boolean getLockByKey(Long key) {
-        String sql = "SELECT pg_try_advisory_lock(?)";
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement ps = connection.prepareStatement(sql)) {
+    public void getLockByKey(Long key) {
+        String sql = "SELECT pg_advisory_xact_lock(?)";
+        jdbcTemplate.execute(sql, (PreparedStatement ps) -> {
             ps.setLong(1, key);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    boolean acquired = rs.getBoolean(1);
-                    if (acquired) {
-                        log.info("키 {}에 대한 락 획득 성공", key);
-                    } else {
-                        log.warn("키 {}에 대한 락 획득 실패", key);
-                    }
-                    return acquired;
-                }
-            }
-        } catch (SQLException e) {
-            log.error("키 {}에 대한 락 획득 중 오류 발생: {}", key, e.getMessage(), e);
-            throw new LockOperationException("락 획득 중 데이터베이스 오류 발생", e);
-        }
-        return false;
+            ps.execute();
+            return null;
+        });
+        log.info("키 {}에 대한 락 획득 성공", key);
     }
 
-    public boolean releaseLockByKey(Long key) {
-        String sql = "SELECT pg_advisory_unlock(?)";
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setLong(1, key);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    boolean released = rs.getBoolean(1);
-                    if (released) {
-                        log.info("키 {}에 대한 락 해제 성공", key);
-                    } else {
-                        log.warn("키 {}에 대한 락 해제 실패", key);
-                    }
-                    return released;
-                }
+    public boolean getLockWithTry(Long key, int maxAttempts, long retryIntervalMillis) {
+        String sql = "SELECT pg_try_advisory_xact_lock(?)";
+        int attempts = 0;
+
+        while (attempts < maxAttempts) {
+            attempts++;
+            Boolean result = jdbcTemplate.queryForObject(sql, Boolean.class, key);
+
+            if (Boolean.TRUE.equals(result)) {
+                log.info("키 {}에 대한 락 획득 성공 (시도 횟수: {})", key, attempts);
+                return true;
             }
-        } catch (SQLException e) {
-            log.error("키 {}에 대한 락 해제 중 오류 발생: {}", key, e.getMessage(), e);
-            throw new LockOperationException("락 해제 중 데이터베이스 오류 발생", e);
+
+            log.warn("키 {}에 대한 락 획득 실패 (시도 횟수: {}). 재시도 대기 중...", key, attempts);
+
+            try {
+                Thread.sleep(retryIntervalMillis);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                throw new RuntimeException("락 재시도 중 인터럽트 발생", e);
+            }
         }
+
+        log.error("키 {}에 대한 락 획득 실패 (최대 시도 횟수: {})", key, maxAttempts);
         return false;
     }
 }
-
-class LockOperationException extends RuntimeException {
-    public LockOperationException(String message, Throwable cause) {
-        super(message, cause);
-    }
-}
-

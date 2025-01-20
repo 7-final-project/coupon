@@ -75,7 +75,7 @@ public class CouponConcurrencyTest {
             int key = i;
             executorService.submit(() -> {
                 try {
-                    couponServiceV1.issueCouponByIdWithPessimisticLock(users.get(key), couponId, String.valueOf(key));
+                    couponServiceV1.issueCouponByIdWithPessimisticLockV1(users.get(key), couponId, String.valueOf(key));
                     System.out.println("Thread " + threadNumber + " - 성공");
 
                 } catch (PessimisticLockingFailureException e) {

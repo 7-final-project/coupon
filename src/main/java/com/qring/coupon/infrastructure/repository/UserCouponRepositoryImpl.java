@@ -1,12 +1,10 @@
 package com.qring.coupon.infrastructure.repository;
 
-import com.qring.coupon.domain.model.CouponEntity;
 import com.qring.coupon.domain.model.UserCouponEntity;
 import com.qring.coupon.domain.repository.UserCouponRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Set;
 
 @Repository
@@ -16,8 +14,8 @@ public class UserCouponRepositoryImpl implements UserCouponRepository {
     private final JpaUserCouponRepository jpaUserCouponRepository;
 
     @Override
-    public boolean existsByUserIdAndCouponEntity(Long userId, CouponEntity couponEntity) {
-        return jpaUserCouponRepository.existsByUserIdAndCouponEntity(userId, couponEntity);
+    public boolean existsByUserIdAndCouponEntityId(Long userId, Long id) {
+        return jpaUserCouponRepository.existsByUserIdAndCouponEntityId(userId, id);
     }
 
     @Override

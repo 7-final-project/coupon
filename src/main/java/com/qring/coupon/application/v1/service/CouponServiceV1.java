@@ -47,7 +47,7 @@ public class CouponServiceV1 {
     }
 
     @Transactional
-    public CouponPostByIdResDTOV1 issueCouponByIdWithPessimisticLock(Long userId, Long id, String username) {
+    public CouponPostByIdResDTOV1 issueCouponByIdWithPessimisticLockV1(Long userId, Long id, String username) {
 
         CouponEntity couponEntityForCheck = getCouponEntityById(id);
 
@@ -55,7 +55,7 @@ public class CouponServiceV1 {
             throw new BadRequestException("쿠폰이 매진되었습니다.");
         }
 
-        if (userCouponRepository.existsByUserIdAndCouponEntity(userId, couponEntityForCheck)) {
+        if (userCouponRepository.existsByUserIdAndCouponEntityId(userId, id)) {
             throw new DuplicateResourceException("이미 보유하고 있는 쿠폰입니다.");
         }
 

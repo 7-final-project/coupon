@@ -3,7 +3,7 @@ package com.qring.coupon.application.v1.service;
 import com.qring.coupon.domain.model.CouponEntity;
 import com.qring.coupon.domain.repository.CouponRepository;
 import com.qring.coupon.domain.repository.UserCouponRepository;
-import com.qring.coupon.infrastructure.lock.RedissonLockFacade;
+import com.qring.coupon.infrastructure.lock.RedissonLockFacadeV2;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,7 +26,7 @@ import java.util.concurrent.Executors;
 class CouponServiceV1Test {
 
     @Autowired
-    private RedissonLockFacade redissonLockFacade;
+    private RedissonLockFacadeV2 redissonLockFacadeV2;
 
     @Autowired
     private UserCouponRepository userCouponRepository;
@@ -72,7 +72,7 @@ class CouponServiceV1Test {
             int key = i;
             executorService.submit(() -> {
                 try {
-                    redissonLockFacade.issueCouponWithLockById(users.get(key), 664928911345881207L, String.valueOf(key));
+                    redissonLockFacadeV2.issueCouponWithLockById(users.get(key), 664928911345881207L, String.valueOf(key));
                     System.out.println("Thread " + threadNumber + " - 성공");
 
                 } catch (PessimisticLockingFailureException e) {

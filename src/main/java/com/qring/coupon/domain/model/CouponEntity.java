@@ -103,14 +103,6 @@ public class CouponEntity {
                 .build();
     }
 
-    public void decreaseRemainingQuantity() {
-        if(this.remainingQuantity <= 0){
-            throw new BadRequestException("재고 수량이 부족합니다.");
-        }
-
-        this.remainingQuantity -= 1;
-    }
-
     public void modifyCouponEntity(String name, int discount, int totalQuantity, int remainingQuantity, LocalDateTime openAt, LocalDateTime expiredAt, String couponStatus, String issuanceStatus, String username) {
         this.name = name;
         this.discount = discount;
@@ -126,5 +118,9 @@ public class CouponEntity {
     public void deletedCouponEntity(String username){
         this.deletedAt = LocalDateTime.now();
         this.deletedBy = username;
+    }
+
+    public void updateRemainQuantity(int remainingQuantity) {
+        this.remainingQuantity = remainingQuantity;
     }
 }

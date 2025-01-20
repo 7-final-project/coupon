@@ -1,6 +1,5 @@
 package com.qring.coupon.infrastructure.repository;
 
-import com.qring.coupon.domain.model.CouponEntity;
 import com.qring.coupon.domain.model.UserCouponEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -10,7 +9,7 @@ import java.util.Set;
 
 public interface JpaUserCouponRepository extends JpaRepository<UserCouponEntity, Long> {
 
-    boolean existsByUserIdAndCouponEntity(Long userId, CouponEntity couponEntity);
+    boolean existsByUserIdAndCouponEntityId(Long userId, Long id);
 
     @Query("select uc from UserCouponEntity uc " +
             "join fetch uc.couponEntity " +

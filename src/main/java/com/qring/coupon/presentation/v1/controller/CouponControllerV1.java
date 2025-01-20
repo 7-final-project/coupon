@@ -4,7 +4,7 @@ import com.qring.coupon.application.global.dto.ResDTO;
 import com.qring.coupon.application.v1.res.*;
 import com.qring.coupon.application.v1.service.CouponServiceV1;
 import com.qring.coupon.infrastructure.docs.CouponControllerSwagger;
-import com.qring.coupon.infrastructure.lock.RedissonLockFacade;
+import com.qring.coupon.infrastructure.lock.RedissonLockFacadeV2;
 import com.qring.coupon.infrastructure.util.PassportUtil;
 import com.qring.coupon.presentation.v1.req.PostCouponReqDTOV1;
 import com.qring.coupon.presentation.v1.req.PutCouponReqDTOV1;
@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.*;
 public class CouponControllerV1 implements CouponControllerSwagger {
 
     private final CouponServiceV1 couponServiceV1;
-    private final RedissonLockFacade redissonLockFacade;
+    private final RedissonLockFacadeV2 redissonLockFacadeV2;
 
     @PostMapping
     public ResponseEntity<ResDTO<CouponPostResDTOV1>> postBy(@RequestHeader("X-Passport-Token") String passport,
@@ -47,7 +47,7 @@ public class CouponControllerV1 implements CouponControllerSwagger {
                 ResDTO.<CouponPostByIdResDTOV1>builder()
                         .code(HttpStatus.CREATED.value())
                         .message("쿠폰 발급에 성공하였습니다.")
-                        .data(redissonLockFacade.issueCouponWithLockById(userId, id, username))
+                        .data(redissonLockFacadeV2.issueCouponWithLockById(userId, id, username))
                         .build(),
                 HttpStatus.CREATED
         );

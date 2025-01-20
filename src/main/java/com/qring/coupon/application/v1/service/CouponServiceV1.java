@@ -27,6 +27,7 @@ import java.util.Set;
 public class CouponServiceV1 {
 
     private final CouponRepository couponRepository;
+    private final CouponCacheServiceV1 couponCacheServiceV1;
     private final UserCouponRepository userCouponRepository;
 
     @Transactional
@@ -43,19 +44,20 @@ public class CouponServiceV1 {
                 PassportUtil.getUsername(passport)
         );
 
-        return CouponPostResDTOV1.of(couponRepository.save(couponEntityForSave));
+        CouponEntity couponEntityBySave = couponRepository.save(couponEntityForSave);
+
+        couponCacheServiceV1.saveCouponQuantity(couponEntityBySave.getId(), couponEntityBySave.getRemainingQuantity());
+
+        return CouponPostResDTOV1.of(couponEntityBySave);
     }
 
     @Transactional
-    public CouponPostByIdResDTOV1 issueBy(Long userId, Long id, String username) {
-
+    public CouponPostByIdResDTOV1 issueBy(Long userId, Long id, String username, int remainingQuantity) {
         CouponEntity couponEntityForCheck = getCouponEntityById(id);
 
-        if (couponEntityForCheck.getRemainingQuantity() <= 0) {
-            throw new BadRequestException("쿠폰이 매진되었습니다.");
-        }
+        couponEntityForCheck.updateRemainQuantity(remainingQuantity);
 
-        if (userCouponRepository.existsByUserIdAndCouponEntity(userId, couponEntityForCheck)) {
+        if (userCouponRepository.existsByUserIdAndCouponEntityId(userId, id)) {
             throw new DuplicateResourceException("이미 보유하고 있는 쿠폰입니다.");
         }
 
@@ -64,6 +66,7 @@ public class CouponServiceV1 {
         }
 
         UserCouponEntity userCouponEntityForSave = UserCouponEntity.createUserCouponEntity(couponEntityForCheck, userId, username);
+
         userCouponRepository.save(userCouponEntityForSave);
 
         return CouponPostByIdResDTOV1.of(couponEntityForCheck);

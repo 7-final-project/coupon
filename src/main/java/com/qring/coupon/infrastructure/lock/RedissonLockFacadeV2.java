@@ -30,17 +30,10 @@ public class RedissonLockFacadeV2 {
 
             if (!available) {
                 log.info("Lock 획득 실패");
-                return CouponPostByIdResDTOV1.of(null);
+                throw new BadRequestException("사용자가 많습니다. 잠시 후 다시 시도해주세요");
             }
 
-            int remainQuantity = couponCacheServiceV1.getCouponQuantity(id);
-
-            if (remainQuantity <= 0) {
-                log.info("쿠폰이 매진되었습니다.");
-                throw new BadRequestException("쿠폰이 매진되었습니다.");
-            }
-
-            remainQuantity -= 1;
+            int remainQuantity = couponCacheServiceV1.decreaseCouponQuantity(id);
 
             couponCacheServiceV1.updateCouponQuantity(id, remainQuantity);
 

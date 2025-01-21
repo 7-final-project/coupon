@@ -1,5 +1,6 @@
 package com.qring.coupon.infrastructure.lock;
 
+import com.qring.coupon.application.global.exception.BadRequestException;
 import com.qring.coupon.application.v1.res.CouponPostByIdResDTOV1;
 import com.qring.coupon.application.v1.service.CouponServiceV1;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,6 @@ public class OptimisticLockFacade {
                 }
             }
         }
-        throw new RuntimeException("쿠폰 발급 재시도 최대 횟수를 초과했습니다.");
+        throw new BadRequestException("쿠폰 발급 재시도 최대 횟수를 초과했습니다.");
     }
 }

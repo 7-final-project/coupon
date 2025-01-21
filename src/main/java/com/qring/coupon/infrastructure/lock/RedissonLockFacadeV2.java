@@ -24,9 +24,10 @@ public class RedissonLockFacadeV2 {
 
     public CouponPostByIdResDTOV1 issueCouponWithLockById(Long userId, Long id, String username) {
         RLock lock = redissonClient.getLock(id.toString());
+        boolean available = false;
 
         try {
-            boolean available = lock.tryLock(10, 1, TimeUnit.SECONDS);
+            available = lock.tryLock(10, 1, TimeUnit.SECONDS);
 
             if (!available) {
                 log.info("Lock 획득 실패");
@@ -42,7 +43,9 @@ public class RedissonLockFacadeV2 {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         } finally {
-            lock.unlock();
+            if(available && lock.isHeldByCurrentThread()){
+                lock.unlock();
+            }
         }
     }
 }

@@ -35,12 +35,14 @@ public class RedissonLockFacadeV2 {
 
             int remainQuantity = couponCacheServiceV1.getCouponQuantity(id);
 
-            couponCacheServiceV1.updateCouponQuantity(id, remainQuantity - 1);
-
             if (remainQuantity <= 0) {
                 log.info("쿠폰이 매진되었습니다.");
                 throw new BadRequestException("쿠폰이 매진되었습니다.");
             }
+
+            remainQuantity -= 1;
+
+            couponCacheServiceV1.updateCouponQuantity(id, remainQuantity);
 
             return couponServiceV1.issueBy(userId, id, username, remainQuantity);
 

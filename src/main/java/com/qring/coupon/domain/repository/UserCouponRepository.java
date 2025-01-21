@@ -7,7 +7,7 @@ import java.util.Set;
 
 public interface UserCouponRepository {
 
-    boolean existsByUserIdAndCouponEntity(Long userId, CouponEntity couponEntity);
+    boolean existsByUserIdAndCouponEntityId(Long userId, Long id);
 
     Set<UserCouponEntity> findUserCouponEntitySetFetchJoinCouponByUserIdAndDeletedAtIsNull(Long userId);
 

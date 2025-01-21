@@ -10,7 +10,7 @@ import java.util.Set;
 
 public interface JpaUserCouponRepository extends JpaRepository<UserCouponEntity, Long> {
 
-    boolean existsByUserIdAndCouponEntity(Long userId, CouponEntity couponEntity);
+    boolean existsByUserIdAndCouponEntityId(Long userId, Long id);
 
     @Query("select uc from UserCouponEntity uc " +
             "join fetch uc.couponEntity " +

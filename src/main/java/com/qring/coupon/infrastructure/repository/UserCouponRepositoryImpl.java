@@ -15,8 +15,8 @@ public class UserCouponRepositoryImpl implements UserCouponRepository {
     private final JpaUserCouponRepository jpaUserCouponRepository;
 
     @Override
-    public boolean existsByUserIdAndCouponEntity(Long userId, CouponEntity couponEntity) {
-        return jpaUserCouponRepository.existsByUserIdAndCouponEntity(userId, couponEntity);
+    public boolean existsByUserIdAndCouponEntityId(Long userId, Long id) {
+        return jpaUserCouponRepository.existsByUserIdAndCouponEntityId(userId, id);
     }
 
     @Override

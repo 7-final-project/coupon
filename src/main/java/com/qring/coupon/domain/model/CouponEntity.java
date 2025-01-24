@@ -103,14 +103,6 @@ public class CouponEntity {
                 .build();
     }
 
-    public void decreaseRemainingQuantity() {
-        if(this.remainingQuantity <= 0){
-            throw new BadRequestException("재고 수량이 부족합니다.");
-        }
-
-        this.remainingQuantity -= 1;
-    }
-
     public void modifyCouponStatus(IssuanceStatus issuanceStatus, CouponStatus couponStatus) {
         this.issuanceStatus = issuanceStatus;
         this.couponStatus = couponStatus;

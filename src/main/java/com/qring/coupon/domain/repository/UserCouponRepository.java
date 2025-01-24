@@ -13,4 +13,5 @@ public interface UserCouponRepository {
 
     UserCouponEntity save(UserCouponEntity userCouponEntity);
 
+    Long countByCouponEntityId(Long couponId);
 }

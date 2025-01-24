@@ -29,4 +29,9 @@ public class UserCouponRepositoryImpl implements UserCouponRepository {
         return jpaUserCouponRepository.save(userCouponEntity);
     }
 
+    @Override
+    public Long countByCouponEntityId(Long couponId) {
+        return jpaUserCouponRepository.countByCouponEntityId(couponId);
+    }
+
 }

@@ -3,7 +3,9 @@ package com.qring.coupon.presentation.v1.controller;
 import com.qring.coupon.application.global.dto.ResDTO;
 import com.qring.coupon.application.v1.res.*;
 import com.qring.coupon.application.v1.service.CouponServiceV1;
+import com.qring.coupon.application.v2.service.CouponServiceV2;
 import com.qring.coupon.infrastructure.docs.CouponControllerSwagger;
+import com.qring.coupon.infrastructure.util.PassportUtil;
 import com.qring.coupon.presentation.v1.req.PostCouponReqDTOV1;
 import com.qring.coupon.presentation.v1.req.PutCouponReqDTOV1;
 import jakarta.validation.Valid;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 public class CouponControllerV1 implements CouponControllerSwagger {
 
     private final CouponServiceV1 couponServiceV1;
+    private final CouponServiceV2 couponServiceV2;
 
     @PostMapping
     public ResponseEntity<ResDTO<CouponPostResDTOV1>> postBy(@RequestHeader("X-Passport-Token") String passport,
@@ -38,11 +41,14 @@ public class CouponControllerV1 implements CouponControllerSwagger {
     @PostMapping("/{id}/issue")
     public ResponseEntity<ResDTO<CouponPostByIdResDTOV1>> issueBy(@RequestHeader("X-Passport-Token") String passport,
                                                                   @PathVariable Long id) {
+        String username = PassportUtil.getUsername(passport);
+        Long userId = PassportUtil.getUserId(passport);
+
         return new ResponseEntity<>(
                 ResDTO.<CouponPostByIdResDTOV1>builder()
                         .code(HttpStatus.CREATED.value())
                         .message("쿠폰 발급에 성공하였습니다.")
-                        .data(couponServiceV1.issueBy(passport, id))
+                        .data(couponServiceV2.issueBy(userId, username, id))
                         .build(),
                 HttpStatus.CREATED
         );

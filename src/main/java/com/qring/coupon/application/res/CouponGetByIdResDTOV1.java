@@ -1,4 +1,4 @@
-package com.qring.coupon.application.v1.res;
+package com.qring.coupon.application.res;
 
 import com.qring.coupon.domain.model.CouponEntity;
 import lombok.AllArgsConstructor;
@@ -12,12 +12,12 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CouponPostResDTOV1 {
+public class CouponGetByIdResDTOV1 {
 
     private Coupon coupon;
 
-    public static CouponPostResDTOV1 of(CouponEntity couponEntity) {
-        return CouponPostResDTOV1.builder()
+    public static CouponGetByIdResDTOV1 of(CouponEntity couponEntity) {
+        return CouponGetByIdResDTOV1.builder()
                 .coupon(Coupon.from(couponEntity))
                 .build();
     }

@@ -1,4 +1,4 @@
-package com.qring.coupon.application.v2.service;
+package com.qring.coupon.application.service;
 
 import com.qring.coupon.domain.repository.UserCouponRepository;
 import org.assertj.core.api.Assertions;
@@ -21,7 +21,7 @@ import java.util.concurrent.Executors;
 class CouponServiceV2Test {
 
     @Autowired
-    private CouponServiceV2 couponServiceV2;
+    private CouponServiceV1 couponServiceV1;
 
     @Autowired
     private UserCouponRepository userCouponRepository;
@@ -47,7 +47,7 @@ class CouponServiceV2Test {
             int key = i;
             executorService.submit(() -> {
                 try {
-                    couponServiceV2.issueBy(users.get(key), String.valueOf(key), 670107053425532958L);
+                    couponServiceV1.issueBy(users.get(key), String.valueOf(key), 670107053425532958L);
                     System.out.println("Thread " + threadNumber + " - 성공");
 
                 } catch (PessimisticLockingFailureException e) {

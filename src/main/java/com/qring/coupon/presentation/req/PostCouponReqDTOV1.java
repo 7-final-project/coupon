@@ -1,4 +1,4 @@
-package com.qring.coupon.presentation.v1.req;
+package com.qring.coupon.presentation.req;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.Valid;

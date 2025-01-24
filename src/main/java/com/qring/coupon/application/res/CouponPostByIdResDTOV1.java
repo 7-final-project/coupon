@@ -1,4 +1,4 @@
-package com.qring.coupon.application.v1.res;
+package com.qring.coupon.application.res;
 
 import com.qring.coupon.domain.model.CouponEntity;
 import lombok.AllArgsConstructor;
@@ -12,12 +12,12 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CouponGetByIdResDTOV1 {
+public class CouponPostByIdResDTOV1 {
 
     private Coupon coupon;
 
-    public static CouponGetByIdResDTOV1 of(CouponEntity couponEntity) {
-        return CouponGetByIdResDTOV1.builder()
+    public static CouponPostByIdResDTOV1 of(CouponEntity couponEntity) {
+        return CouponPostByIdResDTOV1.builder()
                 .coupon(Coupon.from(couponEntity))
                 .build();
     }
@@ -31,24 +31,21 @@ public class CouponGetByIdResDTOV1 {
         private Long id;
         private String name;
         private int discount;
-        private int totalQuantity;
-        private int remainingQuantity;
         private LocalDateTime openAt;
         private LocalDateTime expiredAt;
         private String couponStatus;
+        private String issuanceStatus;
 
-        public static Coupon from(CouponEntity couponEntity){
+        public static Coupon from(CouponEntity couponEntity) {
             return Coupon.builder()
                     .id(couponEntity.getId())
                     .name(couponEntity.getName())
                     .discount(couponEntity.getDiscount())
-                    .totalQuantity(couponEntity.getTotalQuantity())
-                    .remainingQuantity(couponEntity.getRemainingQuantity())
                     .openAt(couponEntity.getOpenAt())
                     .expiredAt(couponEntity.getExpiredAt())
                     .couponStatus(couponEntity.getCouponStatus().getStatus())
+                    .issuanceStatus(couponEntity.getIssuanceStatus().getStatus())
                     .build();
         }
     }
-
 }

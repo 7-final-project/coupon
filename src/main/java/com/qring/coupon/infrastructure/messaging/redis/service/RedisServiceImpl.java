@@ -1,6 +1,6 @@
 package com.qring.coupon.infrastructure.messaging.redis.service;
 
-import com.qring.coupon.application.v2.messaging.RedisService;
+import com.qring.coupon.application.messaging.RedisService;
 import com.qring.coupon.domain.model.CouponEntity;
 import com.qring.coupon.domain.repository.RedisRepository;
 import lombok.RequiredArgsConstructor;

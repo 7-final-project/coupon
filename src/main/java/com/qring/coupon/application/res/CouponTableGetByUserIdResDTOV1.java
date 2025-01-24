@@ -1,4 +1,4 @@
-package com.qring.coupon.application.v1.res;
+package com.qring.coupon.application.res;
 
 import com.qring.coupon.domain.model.CouponEntity;
 import com.qring.coupon.domain.model.UserCouponEntity;

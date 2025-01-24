@@ -1,6 +1,6 @@
 package com.qring.coupon.infrastructure.messaging.kafka;
 
-import com.qring.coupon.application.v2.messaging.KafkaMessageProducerV1;
+import com.qring.coupon.application.messaging.KafkaMessageProducerV1;
 import com.qring.coupon.infrastructure.messaging.kafka.dto.IssueCouponMessageDTOV1;
 import com.qring.coupon.infrastructure.util.EventSerializer;
 import lombok.RequiredArgsConstructor;

@@ -1,19 +1,22 @@
-package com.qring.coupon.application.v1.service;
+package com.qring.coupon.application.service;
 
 import com.qring.coupon.application.global.exception.BadRequestException;
 import com.qring.coupon.application.global.exception.DuplicateResourceException;
 import com.qring.coupon.application.global.exception.EntityNotFoundException;
 import com.qring.coupon.application.global.exception.UnauthorizedAccessException;
-import com.qring.coupon.application.v1.res.*;
+import com.qring.coupon.application.res.*;
+import com.qring.coupon.application.messaging.KafkaMessageProducerV1;
+import com.qring.coupon.application.messaging.RedisService;
 import com.qring.coupon.domain.model.CouponEntity;
 import com.qring.coupon.domain.model.UserCouponEntity;
 import com.qring.coupon.domain.model.constraint.IssuanceStatus;
 import com.qring.coupon.domain.repository.CouponRepository;
 import com.qring.coupon.domain.repository.UserCouponRepository;
+import com.qring.coupon.infrastructure.messaging.kafka.dto.IssueCouponMessageDTOV1;
 import com.qring.coupon.infrastructure.scheduler.CouponScheduler;
 import com.qring.coupon.infrastructure.util.PassportUtil;
-import com.qring.coupon.presentation.v1.req.PostCouponReqDTOV1;
-import com.qring.coupon.presentation.v1.req.PutCouponReqDTOV1;
+import com.qring.coupon.presentation.req.PostCouponReqDTOV1;
+import com.qring.coupon.presentation.req.PutCouponReqDTOV1;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -29,6 +32,8 @@ public class CouponServiceV1 {
 
     private final CouponRepository couponRepository;
     private final UserCouponRepository userCouponRepository;
+    private final RedisService redisService;
+    private final KafkaMessageProducerV1 kafkaMessageProducerV1;
     private final CouponScheduler couponScheduler;
 
     @Transactional
@@ -51,28 +56,28 @@ public class CouponServiceV1 {
     }
 
     @Transactional
-    public CouponPostByIdResDTOV1 issueBy(String passport, Long id) {
+    public CouponPostByIdResDTOV1 issueBy(Long userId, String username, Long id) {
 
         CouponEntity couponEntityForCheck = getCouponEntityById(id);
 
-        if (couponEntityForCheck.getRemainingQuantity() <= 0) {
-            throw new BadRequestException("쿠폰이 매진되었습니다.");
-        }
+        validateIssuanceStatus(couponEntityForCheck);
 
-        if (userCouponRepository.existsByUserIdAndCouponEntity(PassportUtil.getUserId(passport), couponEntityForCheck)) {
-            throw new DuplicateResourceException("이미 보유하고 있는 쿠폰입니다.");
-        }
+        redisService.saveCoupon(userId, couponEntityForCheck);
 
-        if (!Objects.equals(couponEntityForCheck.getIssuanceStatus().getStatus(), "개시")) {
-            throw new BadRequestException("해당 쿠폰은 발급이 불가능합니다.");
-        }
-
-        UserCouponEntity userCouponEntityForSave = UserCouponEntity.createUserCouponEntity(couponEntityForCheck, PassportUtil.getUserId(passport), PassportUtil.getUsername(passport));
-        userCouponRepository.save(userCouponEntityForSave);
+        kafkaMessageProducerV1.publishCouponIssuanceMessage(IssueCouponMessageDTOV1.from(userId, username, id));
 
         return CouponPostByIdResDTOV1.of(couponEntityForCheck);
     }
 
+    @Transactional
+    public void saveUserCoupon(IssueCouponMessageDTOV1 message) {
+
+        CouponEntity couponEntityByIdWithLock = getCouponEntityById(message.getCouponId());
+
+        UserCouponEntity userCouponEntityForSave = UserCouponEntity.createUserCouponEntity(couponEntityByIdWithLock, message.getUserId(), message.getUsername());
+        userCouponRepository.save(userCouponEntityForSave);
+
+    }
     @Transactional(readOnly = true)
     public CouponSearchResDTOV1 searchBy(Pageable pageable, Long userId, String name, String couponStatus, String issuanceStatus, String sort) {
         return CouponSearchResDTOV1.of(couponRepository.couponEntityPageByDeletedAtIsNullWithConditions(pageable, userId, name, couponStatus, issuanceStatus, sort));
@@ -141,6 +146,14 @@ public class CouponServiceV1 {
         validateCouponNameDuplicate(dto.getCoupon().getName());
 
         validateCouponDateRange(dto.getCoupon().getOpenAt(), dto.getCoupon().getExpiredAt());
+    }
+
+    // -----
+    // NOTE : 쿠폰 발급 상태 검증 프로세스
+    private static void validateIssuanceStatus(CouponEntity couponEntityForCheck) {
+        if (!Objects.equals(couponEntityForCheck.getIssuanceStatus().getStatus(), "개시")) {
+            throw new BadRequestException("해당 쿠폰은 발급이 불가능합니다.");
+        }
     }
 
     // -----

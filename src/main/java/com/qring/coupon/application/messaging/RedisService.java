@@ -1,4 +1,4 @@
-package com.qring.coupon.application.v2.messaging;
+package com.qring.coupon.application.messaging;
 
 import com.qring.coupon.domain.model.CouponEntity;
 

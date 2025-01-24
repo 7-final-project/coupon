@@ -1,6 +1,5 @@
 package com.qring.coupon.application.service;
 
-import com.qring.coupon.application.service.CouponServiceV1;
 import com.qring.coupon.domain.repository.UserCouponRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

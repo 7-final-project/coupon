@@ -28,7 +28,7 @@ public class RedisRepositoryImpl implements RedisRepository {
                 String.valueOf(userId),       // ARGV[1]
                 String.valueOf(totalQuantity) // ARGV[2]
         );
-        log.info("===========================" + code + "===========================");
+
         IssuanceCheck.checkResult(code);
     }
 

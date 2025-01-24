@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
-@Slf4j(topic = "KafkaConfigV1")
+@Slf4j(topic = "KafkaConfig")
 public class KafkaConfig {
 
     @Value("${spring.kafka.bootstrap-servers}")
